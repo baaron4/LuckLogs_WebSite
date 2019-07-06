@@ -1,0 +1,925 @@
+﻿@{
+    ViewData["Title"] = "Group Performance";
+}
+@model LuckLogsApp.Models.ViewModel
+
+@{if (Session["GroupID"] != null)
+    {
+        if ((int)Session["GroupID"] > 0)
+        {
+<h2>@Session["GroupName"] 's Group Performance</h2>
+<ul class="nav nav-tabs">
+
+    <li class="active"><a href="#grouptablestats" data-toggle="tab" aria-expanded="true">Stats</a></li>
+    <li class=""><a href="#grouptopDPS" data-toggle="tab" aria-expanded="true">Top DPS</a></li>
+</ul>
+<div id = "myTabContent" class="tab-content">
+    <div class="tab-pane fade active in" id="grouptablestats">
+        <table class="display table table-striped table-hover ">
+            <thead>
+                <tr>
+                    <td>Boss</td>
+                    <td>Killed</td>
+                    <td>Failed</td>
+                    <td>Kill/Fail</td>
+                    <td>Avg Time</td>
+                    <td>Avg Downs</td>
+                    <td>Avg Deaths</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Vale Guardian</td>
+                    @{  var bosslist = Model.GroupLogList.Where(x => x.BossName == "Vale Guardian");}
+                    <td>@bosslist.Where(y => y.Sucess == true).Count()</td>
+                    <td>@bosslist.Where(y => y.Sucess == false).Count()</td>
+                    @{decimal kdr = 0;
+                        if (bosslist.Where(y => y.Sucess == false).Count() > 0) { kdr = (bosslist.Where(y => y.Sucess == true).Count()) / (bosslist.Where(y => y.Sucess == false).Count()); } else { kdr = bosslist.Where(y => y.Sucess == true).Count(); } }
+                    <td>@kdr</td>
+                    @{TimeSpan avgtime = new TimeSpan();
+                        int totalsec = 0;
+                        int countlogs = 0;
+                        foreach (var log in bosslist.Where(y => y.Sucess == true))
+                        {
+                            totalsec = totalsec + (int)log.KillTime.TotalSeconds;
+                            countlogs++;
+                        }
+                        avgtime = TimeSpan.FromSeconds(totalsec / countlogs);
+                        }
+                    <td>@avgtime</td>
+                    @{  
+                        int totaldowns = 0;
+                        int totaldeaths = 0;
+                        countlogs = 0;
+                        foreach (var log in bosslist.Where(y => y.Sucess == true)) {
+
+                            foreach (var playLog in Model.PlList.Where(x => x.logID == log.ID)) {
+                                totaldowns = totaldowns + playLog.downs;
+                                if (playLog.timeDead > TimeSpan.Zero) { totaldeaths = totaldeaths + 1; }
+                            }
+                            countlogs++;
+                        }
+                        
+                    }
+                    <td>@Math.Round((double)totaldowns/(double)countlogs,2)</td>
+                    <td>@Math.Round((double)totaldeaths / (double)countlogs,2)</td>
+                </tr>
+                <tr>
+                    <td>Gorseval the Multifarious</td>
+                    @{   bosslist = Model.GroupLogList.Where(x => x.BossName == "Gorseval the Multifarious");}
+                    <td>@bosslist.Where(y => y.Sucess == true).Count()</td>
+                    <td>@bosslist.Where(y => y.Sucess == false).Count()</td>
+                    @{ kdr = 0;
+                        if (bosslist.Where(y => y.Sucess == false).Count() > 0) { kdr = (bosslist.Where(y => y.Sucess == true).Count()) / (bosslist.Where(y => y.Sucess == false).Count()); } else { kdr = bosslist.Where(y => y.Sucess == true).Count(); } }
+                    <td>@kdr</td>
+                    @{ avgtime = new TimeSpan();
+                         totalsec = 0;
+                         countlogs = 0;
+                        foreach (var log in bosslist.Where(y => y.Sucess == true))
+                        {
+                            totalsec = totalsec + (int)log.KillTime.TotalSeconds;
+                            countlogs++;
+                        }
+                        avgtime = TimeSpan.FromSeconds(totalsec / countlogs);
+                    }
+                    <td>@avgtime</td>
+                    @{
+                         totaldowns = 0;
+                         totaldeaths = 0;
+                        countlogs = 0;
+                        foreach (var log in bosslist.Where(y => y.Sucess == true))
+                        {
+
+                            foreach (var playLog in Model.PlList.Where(x => x.logID == log.ID))
+                            {
+                                totaldowns = totaldowns + playLog.downs;
+                                if (playLog.timeDead > TimeSpan.Zero) { totaldeaths = totaldeaths + 1; }
+                            }
+                            countlogs++;
+                        }
+
+                    }
+                    <td>@Math.Round((double)totaldowns / (double)countlogs, 2)</td>
+                    <td>@Math.Round((double)totaldeaths / (double)countlogs, 2)</td>
+                </tr>
+                <tr>
+                    <td>Sabetha the Saboteur</td>
+                    @{   bosslist = Model.GroupLogList.Where(x => x.BossName == "Sabetha the Saboteur");}
+                    <td>@bosslist.Where(y => y.Sucess == true).Count()</td>
+                    <td>@bosslist.Where(y => y.Sucess == false).Count()</td>
+                    @{ kdr = 0;
+                        if (bosslist.Where(y => y.Sucess == false).Count() > 0) { kdr = (bosslist.Where(y => y.Sucess == true).Count()) / (bosslist.Where(y => y.Sucess == false).Count()); } else { kdr = bosslist.Where(y => y.Sucess == true).Count(); } }
+                    <td>@kdr</td>
+                    @{ avgtime = new TimeSpan();
+                        totalsec = 0;
+                        countlogs = 0;
+                        foreach (var log in bosslist.Where(y => y.Sucess == true))
+                        {
+                            totalsec = totalsec + (int)log.KillTime.TotalSeconds;
+                            countlogs++;
+                        }
+                        avgtime = TimeSpan.FromSeconds(totalsec / countlogs);
+                    }
+                    <td>@avgtime</td>
+                    @{
+                        totaldowns = 0;
+                        totaldeaths = 0;
+                        countlogs = 0;
+                        foreach (var log in bosslist.Where(y => y.Sucess == true))
+                        {
+
+                            foreach (var playLog in Model.PlList.Where(x => x.logID == log.ID))
+                            {
+                                totaldowns = totaldowns + playLog.downs;
+                                if (playLog.timeDead > TimeSpan.Zero) { totaldeaths = totaldeaths + 1; }
+                            }
+                            countlogs++;
+                        }
+
+                    }
+                    <td>@Math.Round((double)totaldowns / (double)countlogs, 2)</td>
+                    <td>@Math.Round((double)totaldeaths / (double)countlogs, 2)</td>
+                </tr>
+                <tr>
+                    <td>Slothasor</td>
+                    @{   bosslist = Model.GroupLogList.Where(x => x.BossName == "Slothasor");}
+                    <td>@bosslist.Where(y => y.Sucess == true).Count()</td>
+                    <td>@bosslist.Where(y => y.Sucess == false).Count()</td>
+                    @{ kdr = 0;
+                        if (bosslist.Where(y => y.Sucess == false).Count() > 0) { kdr = (bosslist.Where(y => y.Sucess == true).Count()) / (bosslist.Where(y => y.Sucess == false).Count()); } else { kdr = bosslist.Where(y => y.Sucess == true).Count(); } }
+                    <td>@kdr</td>
+                    @{ avgtime = new TimeSpan();
+                        totalsec = 0;
+                        countlogs = 0;
+                        foreach (var log in bosslist.Where(y => y.Sucess == true))
+                        {
+                            totalsec = totalsec + (int)log.KillTime.TotalSeconds;
+                            countlogs++;
+                        }
+                        avgtime = TimeSpan.FromSeconds(totalsec / countlogs);
+                    }
+                    <td>@avgtime</td>
+                    @{
+                        totaldowns = 0;
+                        totaldeaths = 0;
+                        countlogs = 0;
+                        foreach (var log in bosslist.Where(y => y.Sucess == true))
+                        {
+
+                            foreach (var playLog in Model.PlList.Where(x => x.logID == log.ID))
+                            {
+                                totaldowns = totaldowns + playLog.downs;
+                                if (playLog.timeDead > TimeSpan.Zero) { totaldeaths = totaldeaths + 1; }
+                            }
+                            countlogs++;
+                        }
+
+                    }
+                    <td>@Math.Round((double)totaldowns / (double)countlogs, 2)</td>
+                    <td>@Math.Round((double)totaldeaths / (double)countlogs, 2)</td>
+                </tr>
+                <tr>
+                    <td>Matthias Gabrel</td>
+                    @{   bosslist = Model.GroupLogList.Where(x => x.BossName == "Matthias Gabrel");}
+                    <td>@bosslist.Where(y => y.Sucess == true).Count()</td>
+                    <td>@bosslist.Where(y => y.Sucess == false).Count()</td>
+                    @{ kdr = 0;
+                        if (bosslist.Where(y => y.Sucess == false).Count() > 0) { kdr = (bosslist.Where(y => y.Sucess == true).Count()) / (bosslist.Where(y => y.Sucess == false).Count()); } else { kdr = bosslist.Where(y => y.Sucess == true).Count(); } }
+                    <td>@kdr</td>
+                    @{ avgtime = new TimeSpan();
+                        totalsec = 0;
+                        countlogs = 0;
+                        foreach (var log in bosslist.Where(y => y.Sucess == true))
+                        {
+                            totalsec = totalsec + (int)log.KillTime.TotalSeconds;
+                            countlogs++;
+                        }
+                        avgtime = TimeSpan.FromSeconds(totalsec / countlogs);
+                    }
+                    <td>@avgtime</td>
+                    @{
+                        totaldowns = 0;
+                        totaldeaths = 0;
+                        countlogs = 0;
+                        foreach (var log in bosslist.Where(y => y.Sucess == true))
+                        {
+
+                            foreach (var playLog in Model.PlList.Where(x => x.logID == log.ID))
+                            {
+                                totaldowns = totaldowns + playLog.downs;
+                                if (playLog.timeDead > TimeSpan.Zero) { totaldeaths = totaldeaths + 1; }
+                            }
+                            countlogs++;
+                        }
+
+                    }
+                    <td>@Math.Round((double)totaldowns / (double)countlogs, 2)</td>
+                    <td>@Math.Round((double)totaldeaths / (double)countlogs, 2)</td>
+                </tr>
+                <tr>
+                    <td>Keep Construct</td>
+                    @{   bosslist = Model.GroupLogList.Where(x => x.BossName == "Keep Construct");}
+                    <td>@bosslist.Where(y => y.Sucess == true).Count()</td>
+                    <td>@bosslist.Where(y => y.Sucess == false).Count()</td>
+                    @{ kdr = 0;
+                        if (bosslist.Where(y => y.Sucess == false).Count() > 0) { kdr = (bosslist.Where(y => y.Sucess == true).Count()) / (bosslist.Where(y => y.Sucess == false).Count()); } else { kdr = bosslist.Where(y => y.Sucess == true).Count(); } }
+                    <td>@kdr</td>
+                    @{ avgtime = new TimeSpan();
+                        totalsec = 0;
+                        countlogs = 0;
+                        foreach (var log in bosslist.Where(y => y.Sucess == true))
+                        {
+                            totalsec = totalsec + (int)log.KillTime.TotalSeconds;
+                            countlogs++;
+                        }
+                        avgtime = TimeSpan.FromSeconds(totalsec / countlogs);
+                    }
+                    <td>@avgtime</td>
+                    @{
+                        totaldowns = 0;
+                        totaldeaths = 0;
+                        countlogs = 0;
+                        foreach (var log in bosslist.Where(y => y.Sucess == true))
+                        {
+
+                            foreach (var playLog in Model.PlList.Where(x => x.logID == log.ID))
+                            {
+                                totaldowns = totaldowns + playLog.downs;
+                                if (playLog.timeDead > TimeSpan.Zero) { totaldeaths = totaldeaths + 1; }
+                            }
+                            countlogs++;
+                        }
+
+                    }
+                    <td>@Math.Round((double)totaldowns / (double)countlogs, 2)</td>
+                    <td>@Math.Round((double)totaldeaths / (double)countlogs, 2)</td>
+                </tr>
+                <tr>
+                    <td>Xera</td>
+                    @{   bosslist = Model.GroupLogList.Where(x => x.BossName == "Xera");}
+                    <td>@bosslist.Where(y => y.Sucess == true).Count()</td>
+                    <td>@bosslist.Where(y => y.Sucess == false).Count()</td>
+                    @{ kdr = 0;
+                        if (bosslist.Where(y => y.Sucess == false).Count() > 0) { kdr = (bosslist.Where(y => y.Sucess == true).Count()) / (bosslist.Where(y => y.Sucess == false).Count()); } else { kdr = bosslist.Where(y => y.Sucess == true).Count(); } }
+                    <td>@kdr</td>
+                    @{ avgtime = new TimeSpan();
+                        totalsec = 0;
+                        countlogs = 0;
+                        foreach (var log in bosslist.Where(y => y.Sucess == true))
+                        {
+                            totalsec = totalsec + (int)log.KillTime.TotalSeconds;
+                            countlogs++;
+                        }
+                        avgtime = TimeSpan.FromSeconds(totalsec / countlogs);
+                    }
+                    <td>@avgtime</td>
+                    @{
+                        totaldowns = 0;
+                        totaldeaths = 0;
+                        countlogs = 0;
+                        foreach (var log in bosslist.Where(y => y.Sucess == true))
+                        {
+
+                            foreach (var playLog in Model.PlList.Where(x => x.logID == log.ID))
+                            {
+                                totaldowns = totaldowns + playLog.downs;
+                                if (playLog.timeDead > TimeSpan.Zero) { totaldeaths = totaldeaths + 1; }
+                            }
+                            countlogs++;
+                        }
+
+                    }
+                    <td>@Math.Round((double)totaldowns / (double)countlogs, 2)</td>
+                    <td>@Math.Round((double)totaldeaths / (double)countlogs, 2)</td>
+                </tr>
+                <tr>
+                    <td>Cairn the Indomitable</td>
+                    @{   bosslist = Model.GroupLogList.Where(x => x.BossName == "Cairn the Indomitable");}
+                    <td>@bosslist.Where(y => y.Sucess == true).Count()</td>
+                    <td>@bosslist.Where(y => y.Sucess == false).Count()</td>
+                    @{ kdr = 0;
+                        if (bosslist.Where(y => y.Sucess == false).Count() > 0) { kdr = (bosslist.Where(y => y.Sucess == true).Count()) / (bosslist.Where(y => y.Sucess == false).Count()); } else { kdr = bosslist.Where(y => y.Sucess == true).Count(); } }
+                    <td>@kdr</td>
+                    @{ avgtime = new TimeSpan();
+                        totalsec = 0;
+                        countlogs = 0;
+                        foreach (var log in bosslist.Where(y => y.Sucess == true))
+                        {
+                            totalsec = totalsec + (int)log.KillTime.TotalSeconds;
+                            countlogs++;
+                        }
+                        avgtime = TimeSpan.FromSeconds(totalsec / countlogs);
+                    }
+                    <td>@avgtime</td>
+                    @{
+                        totaldowns = 0;
+                        totaldeaths = 0;
+                        countlogs = 0;
+                        foreach (var log in bosslist.Where(y => y.Sucess == true))
+                        {
+
+                            foreach (var playLog in Model.PlList.Where(x => x.logID == log.ID))
+                            {
+                                totaldowns = totaldowns + playLog.downs;
+                                if (playLog.timeDead > TimeSpan.Zero) { totaldeaths = totaldeaths + 1; }
+                            }
+                            countlogs++;
+                        }
+
+                    }
+                    <td>@Math.Round((double)totaldowns / (double)countlogs, 2)</td>
+                    <td>@Math.Round((double)totaldeaths / (double)countlogs, 2)</td>
+                </tr>
+                <tr>
+                    <td>Mursaat Overseer</td>
+                    @{   bosslist = Model.GroupLogList.Where(x => x.BossName == "Mursaat Overseer");}
+                    <td>@bosslist.Where(y => y.Sucess == true).Count()</td>
+                    <td>@bosslist.Where(y => y.Sucess == false).Count()</td>
+                    @{ kdr = 0;
+                        if (bosslist.Where(y => y.Sucess == false).Count() > 0) { kdr = (bosslist.Where(y => y.Sucess == true).Count()) / (bosslist.Where(y => y.Sucess == false).Count()); } else { kdr = bosslist.Where(y => y.Sucess == true).Count(); } }
+                    <td>@kdr</td>
+                    @{ avgtime = new TimeSpan();
+                        totalsec = 0;
+                        countlogs = 0;
+                        foreach (var log in bosslist.Where(y => y.Sucess == true))
+                        {
+                            totalsec = totalsec + (int)log.KillTime.TotalSeconds;
+                            countlogs++;
+                        }
+                        avgtime = TimeSpan.FromSeconds(totalsec / countlogs);
+                    }
+                    <td>@avgtime</td>
+                    @{
+                        totaldowns = 0;
+                        totaldeaths = 0;
+                        countlogs = 0;
+                        foreach (var log in bosslist.Where(y => y.Sucess == true))
+                        {
+
+                            foreach (var playLog in Model.PlList.Where(x => x.logID == log.ID))
+                            {
+                                totaldowns = totaldowns + playLog.downs;
+                                if (playLog.timeDead > TimeSpan.Zero) { totaldeaths = totaldeaths + 1; }
+                            }
+                            countlogs++;
+                        }
+
+                    }
+                    <td>@Math.Round((double)totaldowns / (double)countlogs, 2)</td>
+                    <td>@Math.Round((double)totaldeaths / (double)countlogs, 2)</td>
+                </tr>
+                <tr>
+                    <td>Samarog</td>
+                    @{   bosslist = Model.GroupLogList.Where(x => x.BossName == "Samarog");}
+                    <td>@bosslist.Where(y => y.Sucess == true).Count()</td>
+                    <td>@bosslist.Where(y => y.Sucess == false).Count()</td>
+                    @{ kdr = 0;
+                        if (bosslist.Where(y => y.Sucess == false).Count() > 0) { kdr = (bosslist.Where(y => y.Sucess == true).Count()) / (bosslist.Where(y => y.Sucess == false).Count()); } else { kdr = bosslist.Where(y => y.Sucess == true).Count(); } }
+                    <td>@kdr</td>
+                    @{ avgtime = new TimeSpan();
+                        totalsec = 0;
+                        countlogs = 0;
+                        foreach (var log in bosslist.Where(y => y.Sucess == true))
+                        {
+                            totalsec = totalsec + (int)log.KillTime.TotalSeconds;
+                            countlogs++;
+                        }
+                        avgtime = TimeSpan.FromSeconds(totalsec / countlogs);
+                    }
+                    <td>@avgtime</td>
+                    @{
+                        totaldowns = 0;
+                        totaldeaths = 0;
+                        countlogs = 0;
+                        foreach (var log in bosslist.Where(y => y.Sucess == true))
+                        {
+
+                            foreach (var playLog in Model.PlList.Where(x => x.logID == log.ID))
+                            {
+                                totaldowns = totaldowns + playLog.downs;
+                                if (playLog.timeDead > TimeSpan.Zero) { totaldeaths = totaldeaths + 1; }
+                            }
+                            countlogs++;
+                        }
+
+                    }
+                    <td>@Math.Round((double)totaldowns / (double)countlogs, 2)</td>
+                    <td>@Math.Round((double)totaldeaths / (double)countlogs, 2)</td>
+                </tr>
+                <tr>
+                    <td>Deimos</td>
+                    @{   bosslist = Model.GroupLogList.Where(x => x.BossName == "Deimos");}
+                    <td>@bosslist.Where(y => y.Sucess == true).Count()</td>
+                    <td>@bosslist.Where(y => y.Sucess == false).Count()</td>
+                    @{ kdr = 0;
+                        if (bosslist.Where(y => y.Sucess == false).Count() > 0) { kdr = (bosslist.Where(y => y.Sucess == true).Count()) / (bosslist.Where(y => y.Sucess == false).Count()); } else { kdr = bosslist.Where(y => y.Sucess == true).Count(); } }
+                    <td>@kdr</td>
+                    @{ avgtime = new TimeSpan();
+                        totalsec = 0;
+                        countlogs = 0;
+                        foreach (var log in bosslist.Where(y => y.Sucess == true))
+                        {
+                            totalsec = totalsec + (int)log.KillTime.TotalSeconds;
+                            countlogs++;
+                        }
+                        avgtime = TimeSpan.FromSeconds(totalsec / countlogs);
+                    }
+                    <td>@avgtime</td>
+                    @{
+                        totaldowns = 0;
+                        totaldeaths = 0;
+                        countlogs = 0;
+                        foreach (var log in bosslist.Where(y => y.Sucess == true))
+                        {
+
+                            foreach (var playLog in Model.PlList.Where(x => x.logID == log.ID))
+                            {
+                                totaldowns = totaldowns + playLog.downs;
+                                if (playLog.timeDead > TimeSpan.Zero) { totaldeaths = totaldeaths + 1; }
+                            }
+                            countlogs++;
+                        }
+
+                    }
+                    <td>@Math.Round((double)totaldowns / (double)countlogs, 2)</td>
+                    <td>@Math.Round((double)totaldeaths / (double)countlogs, 2)</td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+    <div class="tab-pane fade in" id="grouptopDPS">
+        <div class="container">
+            <h3>Top Scoring Players</h3>
+            <div id="myCarousel" class="carousel slide" data-ride="carousel">
+                <!-- Indicators -->
+                <ol class="carousel-indicators">
+                    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                    <li data-target="#myCarousel" data-slide-to="1"></li>
+                    <li data-target="#myCarousel" data-slide-to="2"></li>
+                    <li data-target="#myCarousel" data-slide-to="3"></li>
+                </ol>
+
+                <!-- Wrapper for slides -->
+                <div class="carousel-inner">
+                    <div class="item active">
+                        <h3>Wing 1</h3>
+                        <div class="row">
+                            @{ var topLog = Model.DPSPlayerList.FirstOrDefault(q => q.bossName == "Vale Guardian");}
+                            <div class="col-md-3">
+                                <ul class="list-group">
+                                    <li class="list-group-item list-group-item-info"><center><span class="glyphicon glyphicon-star" style="color:yellow"></span> @topLog.bossName <span class="glyphicon glyphicon-star" style="color:yellow"></span></center></li>
+                                    <li class="list-group-item">
+                                        <center>
+                                            @topLog.playerName <img src="@ViewData[topLog.profession]" alt="@topLog.profession" title="@topLog.profession" height="18" width="18">@if (topLog.build == "Condi")
+                                            { <span class="label label-warning">Condi</span>}
+                                            else
+                                            { <span class="label label-danger">Power</span>}
+                                        </center>
+                                    </li>
+                                    <li class="list-group-item"><center>@topLog.accountName</center></li>
+                                    <li class="list-group-item"><center>@topLog.bossDPS.ToString("N0") DPS</center></li>
+                                    <li class="list-group-item">
+                                        <div class="btn-group btn-group-justified">
+                                            <a href="@Url.Action("Logs", "Home", new { id = topLog.logID })" class="btn btn-default">Log</a>
+                                            <a href="@Url.Action("Rankings", "Home", new { boss = topLog.bossName })" class="btn btn-default">Stat</a>
+                                            <a href="@Url.Action("PlayerPerformance", "Home", new { acctname = topLog.accountName })" class="btn btn-default">Profile</a>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            @{topLog = Model.DPSPlayerList.FirstOrDefault(q => q.bossName == "Gorseval the Multifarious");}
+                            <div class="col-md-3">
+                                <ul class="list-group">
+                                    <li class="list-group-item list-group-item-danger"><center><span class="glyphicon glyphicon-star" style="color:yellow"></span> @topLog.bossName <span class="glyphicon glyphicon-star" style="color:yellow"></span></center></li>
+                                    <li class="list-group-item">
+                                        <center>
+                                            @topLog.playerName <img src="@ViewData[topLog.profession]" alt="@topLog.profession" title="@topLog.profession" height="18" width="18">@if (topLog.build == "Condi")
+                                            { <span class="label label-warning">Condi</span>}
+                                            else
+                                            { <span class="label label-danger">Power</span>}
+                                        </center>
+                                    </li>
+                                    <li class="list-group-item"><center>@topLog.accountName</center></li>
+                                    <li class="list-group-item"><center>@topLog.bossDPS.ToString("N0") DPS</center></li>
+                                    <li class="list-group-item">
+                                        <div class="btn-group btn-group-justified">
+                                            <a href="@Url.Action("Logs", "Home", new { id = topLog.logID })" class="btn btn-default">Log</a>
+                                            <a href="@Url.Action("Rankings", "Home", new { boss = topLog.bossName })" class="btn btn-default">Stat</a>
+                                            <a href="@Url.Action("PlayerPerformance", "Home", new { acctname = topLog.accountName })" class="btn btn-default">Profile</a>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            @{topLog = Model.DPSPlayerList.FirstOrDefault(q => q.bossName == "Sabetha the Saboteur");}
+                            <div class="col-md-3">
+                                <ul class="list-group">
+                                    <li class="list-group-item list-group-item-warning"><center><span class="glyphicon glyphicon-star" style="color:yellow"></span> @topLog.bossName <span class="glyphicon glyphicon-star" style="color:yellow"></span></center></li>
+                                    <li class="list-group-item">
+                                        <center>
+                                            @topLog.playerName <img src="@ViewData[topLog.profession]" alt="@topLog.profession" title="@topLog.profession" height="18" width="18">@if (topLog.build == "Condi")
+                                            { <span class="label label-warning">Condi</span>}
+                                            else
+                                            { <span class="label label-danger">Power</span>}
+                                        </center>
+                                    </li>
+                                    <li class="list-group-item"><center>@topLog.accountName</center></li>
+                                    <li class="list-group-item"><center>@topLog.bossDPS.ToString("N0") DPS</center></li>
+                                    <li class="list-group-item">
+                                        <div class="btn-group btn-group-justified">
+                                            <a href="@Url.Action("Logs", "Home", new { id = topLog.logID })" class="btn btn-default">Log</a>
+                                            <a href="@Url.Action("Rankings", "Home", new { boss = topLog.bossName })" class="btn btn-default">Stat</a>
+                                            <a href="@Url.Action("PlayerPerformance", "Home", new { acctname = topLog.accountName })" class="btn btn-default">Profile</a>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="item">
+                        <h3>Wing 2</h3>
+                        <div class="row">
+                            @{topLog = Model.DPSPlayerList.FirstOrDefault(q => q.bossName == "Slothasor");}
+                            <div class="col-md-3">
+                                <ul class="list-group">
+                                    <li class="list-group-item list-group-item-success"><center><span class="glyphicon glyphicon-star" style="color:yellow"></span> @topLog.bossName <span class="glyphicon glyphicon-star" style="color:yellow"></span></center></li>
+                                    <li class="list-group-item">
+                                        <center>
+                                            @topLog.playerName <img src="@ViewData[topLog.profession]" alt="@topLog.profession" title="@topLog.profession" height="18" width="18">@if (topLog.build == "Condi")
+                                            { <span class="label label-warning">Condi</span>}
+                                            else
+                                            { <span class="label label-danger">Power</span>}
+                                        </center>
+                                    </li>
+                                    <li class="list-group-item"><center>@topLog.accountName</center></li>
+                                    <li class="list-group-item"><center>@topLog.bossDPS.ToString("N0") DPS</center></li>
+                                    <li class="list-group-item">
+                                        <div class="btn-group btn-group-justified">
+                                            <a href="@Url.Action("Logs", "Home", new { id = topLog.logID })" class="btn btn-default">Log</a>
+                                            <a href="@Url.Action("Rankings", "Home", new { boss = topLog.bossName })" class="btn btn-default">Stat</a>
+                                            <a href="@Url.Action("PlayerPerformance", "Home", new { acctname = topLog.accountName })" class="btn btn-default">Profile</a>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            @{topLog = Model.DPSPlayerList.FirstOrDefault(q => q.bossName == "Matthias Gabrel");}
+                            <div class="col-md-3">
+                                <ul class="list-group">
+                                    <li class="list-group-item list-group-item-warning"><center><span class="glyphicon glyphicon-star" style="color:yellow"></span> @topLog.bossName <span class="glyphicon glyphicon-star" style="color:yellow"></span></center></li>
+                                    <li class="list-group-item">
+                                        <center>
+                                            @topLog.playerName <img src="@ViewData[topLog.profession]" alt="@topLog.profession" title="@topLog.profession" height="18" width="18">@if (topLog.build == "Condi")
+                                            { <span class="label label-warning">Condi</span>}
+                                            else
+                                            { <span class="label label-danger">Power</span>}
+                                        </center>
+                                    </li>
+                                    <li class="list-group-item"><center>@topLog.accountName</center></li>
+                                    <li class="list-group-item"><center>@topLog.bossDPS.ToString("N0") DPS</center></li>
+                                    <li class="list-group-item">
+                                        <div class="btn-group btn-group-justified">
+                                            <a href="@Url.Action("Logs", "Home", new { id = topLog.logID })" class="btn btn-default">Log</a>
+                                            <a href="@Url.Action("Rankings", "Home", new { boss = topLog.bossName })" class="btn btn-default">Stat</a>
+                                            <a href="@Url.Action("PlayerPerformance", "Home", new { acctname = topLog.accountName })" class="btn btn-default">Profile</a>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="item">
+                        <h3>Wing 3</h3>
+                        <div class="row">
+
+                            @{topLog = Model.DPSPlayerList.FirstOrDefault(q => q.bossName == "Keep Construct");}
+                            <div class="col-md-3">
+                                <ul class="list-group">
+                                    <li class="list-group-item list-group-item-danger"><center><span class="glyphicon glyphicon-star" style="color:yellow"></span> @topLog.bossName <span class="glyphicon glyphicon-star" style="color:yellow"></span></center></li>
+                                    <li class="list-group-item">
+                                        <center>
+                                            @topLog.playerName <img src="@ViewData[topLog.profession]" alt="@topLog.profession" title="@topLog.profession" height="18" width="18">@if (topLog.build == "Condi")
+                                            { <span class="label label-warning">Condi</span>}
+                                            else
+                                            { <span class="label label-danger">Power</span>}
+                                        </center>
+                                    </li>
+                                    <li class="list-group-item"><center>@topLog.accountName</center></li>
+                                    <li class="list-group-item"><center>@topLog.bossDPS.ToString("N0") DPS</center></li>
+                                    <li class="list-group-item">
+                                        <div class="btn-group btn-group-justified">
+                                            <a href="@Url.Action("Logs", "Home", new { id = topLog.logID })" class="btn btn-default">Log</a>
+                                            <a href="@Url.Action("Rankings", "Home", new { boss = topLog.bossName })" class="btn btn-default">Stat</a>
+                                            <a href="@Url.Action("PlayerPerformance", "Home", new { acctname = topLog.accountName })" class="btn btn-default">Profile</a>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            @{topLog = Model.DPSPlayerList.FirstOrDefault(q => q.bossName == "Xera");}
+                            <div class="col-md-3">
+                                <ul class="list-group">
+                                    <li class="list-group-item list-group-item-info"><center><span class="glyphicon glyphicon-star" style="color:yellow"></span> @topLog.bossName <span class="glyphicon glyphicon-star" style="color:yellow"></span></center></li>
+                                    <li class="list-group-item">
+                                        <center>
+                                            @topLog.playerName <img src="@ViewData[topLog.profession]" alt="@topLog.profession" title="@topLog.profession" height="18" width="18">@if (topLog.build == "Condi")
+                                            { <span class="label label-warning">Condi</span>}
+                                            else
+                                            { <span class="label label-danger">Power</span>}
+                                        </center>
+                                    </li>
+                                    <li class="list-group-item"><center>@topLog.accountName</center></li>
+                                    <li class="list-group-item"><center>@topLog.bossDPS.ToString("N0") DPS</center></li>
+                                    <li class="list-group-item">
+                                        <div class="btn-group btn-group-justified">
+                                            <a href="@Url.Action("Logs", "Home", new { id = topLog.logID })" class="btn btn-default">Log</a>
+                                            <a href="@Url.Action("Rankings", "Home", new { boss = topLog.bossName })" class="btn btn-default">Stat</a>
+                                            <a href="@Url.Action("PlayerPerformance", "Home", new { acctname = topLog.accountName })" class="btn btn-default">Profile</a>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <h3>Wing 4</h3>
+                        <div class="container">
+                            <div class="row">
+                                @{topLog = Model.DPSPlayerList.FirstOrDefault(q => q.bossName == "Cairn the Indomitable");}
+                                <div class="col-md-3">
+                                    <ul class="list-group">
+                                        <li class="list-group-item list-group-item-danger"><center><span class="glyphicon glyphicon-star" style="color:yellow"></span> @topLog.bossName <span class="glyphicon glyphicon-star" style="color:yellow"></span></center></li>
+                                        <li class="list-group-item">
+                                            <center>
+                                                @topLog.playerName <img src="@ViewData[topLog.profession]" alt="@topLog.profession" title="@topLog.profession" height="18" width="18">@if (topLog.build == "Condi")
+                                                { <span class="label label-warning">Condi</span>}
+                                                else
+                                                { <span class="label label-danger">Power</span>}
+                                            </center>
+                                        </li>
+                                        <li class="list-group-item"><center>@topLog.accountName</center></li>
+                                        <li class="list-group-item"><center>@topLog.bossDPS.ToString("N0") DPS</center></li>
+                                        <li class="list-group-item">
+                                            <div class="btn-group btn-group-justified">
+                                                <a href="@Url.Action("Logs", "Home", new { id = topLog.logID })" class="btn btn-default">Log</a>
+                                                <a href="@Url.Action("Rankings", "Home", new { boss = topLog.bossName })" class="btn btn-default">Stat</a>
+                                                <a href="@Url.Action("PlayerPerformance", "Home", new { acctname = topLog.accountName })" class="btn btn-default">Profile</a>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                @{topLog = Model.DPSPlayerList.FirstOrDefault(q => q.bossName == "Mursaat Overseer");}
+                                <div class="col-md-3">
+                                    <ul class="list-group">
+                                        <li class="list-group-item list-group-item-warning"><center><span class="glyphicon glyphicon-star" style="color:yellow"></span> @topLog.bossName <span class="glyphicon glyphicon-star" style="color:yellow"></span></center></li>
+                                        <li class="list-group-item">
+                                            <center>
+                                                @topLog.playerName <img src="@ViewData[topLog.profession]" alt="@topLog.profession" title="@topLog.profession" height="18" width="18">@if (topLog.build == "Condi")
+                                                { <span class="label label-warning">Condi</span>}
+                                                else
+                                                { <span class="label label-danger">Power</span>}
+                                            </center>
+                                        </li>
+                                        <li class="list-group-item"><center>@topLog.accountName</center></li>
+                                        <li class="list-group-item"><center>@topLog.bossDPS.ToString("N0") DPS</center></li>
+                                        <li class="list-group-item">
+                                            <div class="btn-group btn-group-justified">
+                                                <a href="@Url.Action("Logs", "Home", new { id = topLog.logID })" class="btn btn-default">Log</a>
+                                                <a href="@Url.Action("Rankings", "Home", new { boss = topLog.bossName })" class="btn btn-default">Stat</a>
+                                                <a href="@Url.Action("PlayerPerformance", "Home", new { acctname = topLog.accountName })" class="btn btn-default">Profile</a>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                @{topLog = Model.DPSPlayerList.FirstOrDefault(q => q.bossName == "Samarog");}
+                                <div class="col-md-3">
+                                    <ul class="list-group">
+                                        <li class="list-group-item list-group-item-info"><center><span class="glyphicon glyphicon-star" style="color:yellow"></span> @topLog.bossName <span class="glyphicon glyphicon-star" style="color:yellow"></span></center></li>
+                                        <li class="list-group-item">
+                                            <center>
+                                                @topLog.playerName <img src="@ViewData[topLog.profession]" alt="@topLog.profession" title="@topLog.profession" height="18" width="18">@if (topLog.build == "Condi")
+                                                { <span class="label label-warning">Condi</span>}
+                                                else
+                                                { <span class="label label-danger">Power</span>}
+                                            </center>
+                                        </li>
+                                        <li class="list-group-item"><center>@topLog.accountName</center></li>
+                                        <li class="list-group-item"><center>@topLog.bossDPS.ToString("N0") DPS</center></li>
+                                        <li class="list-group-item">
+                                            <div class="btn-group btn-group-justified">
+                                                <a href="@Url.Action("Logs", "Home", new { id = topLog.logID })" class="btn btn-default">Log</a>
+                                                <a href="@Url.Action("Rankings", "Home", new { boss = topLog.bossName })" class="btn btn-default">Stat</a>
+                                                <a href="@Url.Action("PlayerPerformance", "Home", new { acctname = topLog.accountName })" class="btn btn-default">Profile</a>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                @{topLog = Model.DPSPlayerList.FirstOrDefault(q => q.bossName == "Deimos");}
+                                <div class="col-md-3">
+                                    <ul class="list-group">
+                                        <li class="list-group-item list-group-item-success"><center><span class="glyphicon glyphicon-star" style="color:yellow"></span> @topLog.bossName <span class="glyphicon glyphicon-star" style="color:yellow"></span></center></li>
+                                        <li class="list-group-item">
+                                            <center>
+                                                @topLog.playerName <img src="@ViewData[topLog.profession]" alt="@topLog.profession" title="@topLog.profession" height="18" width="18">@if (topLog.build == "Condi")
+                                                { <span class="label label-warning">Condi</span>}
+                                                else
+                                                { <span class="label label-danger">Power</span>}
+                                            </center>
+                                        </li>
+                                        <li class="list-group-item"><center>@topLog.accountName</center></li>
+                                        <li class="list-group-item"><center>@topLog.bossDPS.ToString("N0") DPS</center></li>
+                                        <li class="list-group-item">
+                                            <div class="btn-group btn-group-justified">
+                                                <a href="@Url.Action("Logs", "Home", new { id = topLog.logID })" class="btn btn-default">Log</a>
+                                                <a href="@Url.Action("Rankings", "Home", new { boss = topLog.bossName })" class="btn btn-default">Stat</a>
+                                                <a href="@Url.Action("PlayerPerformance", "Home", new { acctname = topLog.accountName })" class="btn btn-default">Profile</a>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Left and right controls -->
+            @*<a class="left carousel-control" href="#myCarousel" data-slide="prev">
+                    <span class="glyphicon glyphicon-chevron-left"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="right carousel-control" href="#myCarousel" data-slide="next">
+                    <span class="glyphicon glyphicon-chevron-right"></span>
+                    <span class="sr-only">Next</span>
+                </a>*@
+        </div>
+    </div>
+    </div>
+
+<ul class="nav nav-tabs">
+
+    <li class="active"><a href="#recentlogs" data-toggle="tab" aria-expanded="true">Recent Logs</a></li>
+    <li class=""><a href="#allogs" data-toggle="tab" aria-expanded="true">All Logs</a></li>
+</ul>
+<div id="myTabContent" class="tab-content">
+    <div class="tab-pane fade active in" id="recentlogs">
+        <div id="recentLogs">
+            <h3>Weekly Logs</h3>
+            @*<input type="week" id="WeekGroup" onchange="WeekSelectGroupLogs()"><br />*@
+
+            @{var modelCustom = Model;}
+            <div id="PartialGroup">
+                @Html.Partial("GroupLog", modelCustom)
+            </div>
+            <script>
+    function WeekSelectGroupLogs() {
+        var weekInput = document.getElementById("WeekGroup");
+        var weekYear = weekInput.value.substring(0, 4);
+        var weekNum = weekInput.value.substring(6, weekInput.value.Length);
+        //console.log(weekYear + weekNum);
+        var startDate = getDateOfISOWeek(weekNum, weekYear);
+        var endDate = new Date(startDate);
+        endDate.setDate(startDate.getDate() + 7);
+        var startDateString = startDate.getFullYear() + "" + (startDate.getMonth() + 1) + "" + startDate.getDate();
+        var endDateString = endDate.getFullYear() + "" + (endDate.getMonth() + 1) + "" + endDate.getDate();
+        //console.log(startDateString +" "+ endDate);
+        @*@{
+            modelCustom.DbList = modelCustom.DbList.Where(x => Int32.Parse(x.HtmlFile.Substring(51, 8)) < );
+    }*@
+        // $("#PartialGroup").load(window.location.href + "#PartialGroup");
+    }
+            </script>
+
+        </div>
+           
+        </div>
+    <div class="tab-pane fade in" id="allogs">
+        <script>
+$(document).ready(function () {
+                    $('#groupLogTable').DataTable({
+                        "order": [[1, "desc"]],
+                        initComplete: function () {
+                            this.api().columns([0]).every(function () {
+                                var column = this;
+                                var select = $('<select style="color:black;"><option value="">Show all</option></select>')
+                                    .appendTo($(column.footer()).empty())
+                                    .on('change', function () {
+                                        var val = $.fn.dataTable.util.escapeRegex(
+                                            $(this).val()
+                                        );
+
+                                        column
+                                            .search(val ? '^' + val + '$' : '', true, false)
+                                            .draw();
+                                    });
+
+                                column.data().unique().sort().each(function (d, j) {
+                                    var val = $('<div/>').html(d).text();
+                                    select.append('<option value="' + val + '">' + val + '</option>');
+                                });
+                            });
+                        }
+                    });
+                });</script>
+        <table class="table table-striped table-hover " id="groupLogTable">
+            <thead>
+                <tr>
+
+                    <th>
+                        Boss
+                    </th>
+                    <th>
+                        Date
+                    </th>
+                    <th>
+                        Time
+                    </th>
+                    <th>
+                        Link
+                    </th>
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <th>
+                        Boss
+                    </th>
+                    <th>
+
+                    </th>
+                    <th>
+
+                    </th>
+                    <th>
+
+                    </th>
+                </tr>
+            </tfoot>
+            <tbody>
+                @foreach (var item in Model.GroupLogList)
+                {
+                    <tr data-toggle="tooltip" data-html="true" data-placement="top" title="@Html.DisplayFor(modelItem => item.CompTable)">
+
+                        <td>
+                            @if (item.Sucess)
+                            {
+                                <p class="text-success">  @Html.DisplayFor(modelItem => item.BossName)</p>
+                            }
+                            else
+                            {
+                                <p class="text-warning">  @Html.DisplayFor(modelItem => item.BossName)</p>
+                            }
+                        </td>
+                        <td>
+                            @{string fileString = "";
+                                string dateString = "";
+                                if (item.EVTCFile != null)
+                                {
+                                    fileString = Html.DisplayFor(modelItem => item.EVTCFile).ToString();//Create Date from evtc file name
+                                    dateString = fileString.Substring(fileString.Length - 20, 15);
+                                }
+                                else if (item.HtmlFile != null)
+                                {
+                                    fileString = Html.DisplayFor(modelItem => item.HtmlFile).ToString();//Create Date from evtc file name
+                                    dateString = fileString.Substring(51, 15);
+                                }
+
+                                string Y = dateString.Substring(0, 4);
+                                string M = dateString.Substring(4, 2);
+                                string D = dateString.Substring(6, 2);
+                                string H = dateString.Substring(9, 2);
+                                string mn = dateString.Substring(11, 2);
+                                string s = dateString.Substring(13, 2);
+                                string dispDate = Y + "-" + M + "-" + D + "  " + H + ":" + mn;
+                                <p>@dispDate</p>
+
+                            }
+                        </td>
+                           
+                        <td>
+                            @Html.DisplayFor(modelItem => item.KillTime)
+                        </td>
+                        <td>
+                            <a href="@Url.Action("Logs", "Home", new { id = item.ID})" class="btn btn-success btn-sm">Open</a>
+
+
+                        </td>
+
+                    </tr>
+                            }
+            </tbody>
+        </table>
+
+    </div>
+    </div>
+                            }
+                            else
+                            {
+                                <h3>Please select a group at the top of the page in the site filter bar</h3>
+                                }
+                            }
+}

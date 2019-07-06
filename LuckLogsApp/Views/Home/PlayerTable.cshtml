@@ -1,0 +1,61 @@
+﻿
+@{
+    ViewBag.Title = "PlayerTable";
+}
+@model LuckLogsApp.Models.ViewModel
+<h2>Player List</h2>
+<script> $(document).ready(function () {
+        $('#playlist-table').DataTable({
+            initComplete: function () {
+                this.api().columns([1, 2, 3, 4]).every(function () {
+                    var column = this;
+                    var select = $('<select style="color:black;"><option value="">Show all</option></select>')
+                        .appendTo($(column.footer()).empty())
+                        .on('change', function () {
+                            var val = $.fn.dataTable.util.escapeRegex(
+                                $(this).val()
+                            );
+
+                            column
+                                .search(val ? '^' + val + '$' : '', true, false)
+                                .draw();
+                        });
+
+                    column.data().unique().sort().each(function (d, j) {
+                        var val = $('<div/>').html(d).text();
+                        select.append('<option value="' + val + '">' + val + '</option>');
+                    });
+                });
+            }
+        });
+    });</script>
+
+<table class="display table table-striped table-hover " id="playlist-table">
+    <thead>
+        <tr>
+            
+            <th>
+                Account
+            </th>
+           
+            <th>
+                Profile
+            </th>
+        </tr>
+    </thead>
+    <tfoot>
+        
+    </tfoot>
+    <tbody>
+        @foreach (string name in Model.PlList.Select(x=> x.accountName).Distinct().ToList())
+        {
+
+            <tr>
+                <td>@name</td>
+                <td><a href="@Url.Action("PlayerPerformance", "Home", new { acctname = name})" class="btn btn-success btn-sm">Open</a></td>
+              
+            </tr>
+
+                        }
+    </tbody>
+</table>

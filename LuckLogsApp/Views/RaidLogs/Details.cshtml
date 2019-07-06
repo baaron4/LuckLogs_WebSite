@@ -1,0 +1,70 @@
+﻿
+
+
+@{
+    ViewBag.Title = "Details";
+    var log = (LuckLogsApp.Models.RaidLog)TempData["Log"];
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>RaidLog</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            EVTC File
+        </dt>
+
+        <dd>
+            @log.EVTCFile
+        </dd>
+
+        <dt>
+           HtmlFile
+        </dt>
+
+        <dd>
+            @log.HtmlFile
+        </dd>
+
+        <dt>
+            Boss Name
+        </dt>
+
+        <dd>
+            @log.BossName
+        </dd>
+
+        <dt>
+            Success
+        </dt>
+
+        <dd>
+            @log.Sucess
+        </dd>
+
+        <dt>
+           Date Posted
+        </dt>
+
+        <dd>
+            @log.Date
+        </dd>
+
+        <dt>
+            KillTime
+        </dt>
+
+        <dd>
+           @log.KillTime
+        </dd>
+
+        
+
+    </dl>
+</div>
+<p>
+    
+    @Html.ActionLink("Back to List", "Index")
+</p>

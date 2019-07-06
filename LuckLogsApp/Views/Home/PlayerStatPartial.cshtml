@@ -1,0 +1,334 @@
+﻿
+@model LuckLogsApp.Models.ViewModel
+@{
+    var profList = Model.DPSPlayerList.Select(x => x.profession).Distinct().ToList();
+    var GraphList = new List<LuckLogsApp.Models.ProfessionDPSModel>();
+
+    foreach (string prof in profList)
+    {
+        var classPowerList = Model.DPSPlayerList.Where(x => x.profession == prof && x.build == "Power").ToList();
+        var classCondiList = Model.DPSPlayerList.Where(x => x.profession == prof && x.build == "Condi").ToList();
+
+        if (classPowerList != null)
+        {
+            int entrys = 0;
+            int minDPS = 0;
+            int maxDPS = 0;
+            int minDPSID = 0;
+            int maxDPSID = 0;
+            int avgDPS = 0;
+            var avgDPSTime = new List<int[]>();
+            string profString = "";
+            foreach (var player in classPowerList)
+            {
+
+                if (player.bossDPS != 0)
+                {
+                    entrys++;
+                    if (entrys == 1)
+                    {
+                        profString = player.profession;
+                        minDPS = player.bossDPS;
+                        minDPSID = player.logID;
+                        maxDPS = player.bossDPS;
+                        maxDPSID = player.logID;
+                        avgDPS = player.bossDPS;
+
+
+
+                    }
+                    else
+                    {
+                        avgDPS = ((avgDPS * (entrys - 1)) + player.bossDPS) / (entrys);
+                        if (player.bossDPS < minDPS) { minDPS = player.bossDPS; minDPSID = player.logID; }
+                        if (player.bossDPS > maxDPS) { maxDPS = player.bossDPS; maxDPSID = player.logID; }
+
+                    }
+                    int[] avgOverTimeEntry = new int[3];
+                    avgOverTimeEntry[0] = Int32.Parse(Model.DbList.FirstOrDefault(x => x.ID == player.logID).HtmlFile.Substring(51, 8));
+                    avgOverTimeEntry[1] = player.bossDPS;
+                    avgOverTimeEntry[2] = 1;
+                    bool existing = false;
+                    for (int i = 0; i < avgDPSTime.Count; i++)
+                    {
+                        if (avgDPSTime[i][0] == avgOverTimeEntry[0])
+                        {
+                            avgDPSTime[i][2]++;
+                            avgDPSTime[i][1] = ((avgDPSTime[i][1] * (avgDPSTime[i][2] - 1)) + avgOverTimeEntry[1]) / (avgDPSTime[i][2]);//((avgDPS * (entrys - 1)) + player.bossDPS) / (entrys);
+
+                            existing = true;
+                        }
+                    }
+                    if (existing == false)
+                    {
+                        avgDPSTime.Add(avgOverTimeEntry);
+                    }
+                }
+
+            }
+            var itemToadd = new LuckLogsApp.Models.ProfessionDPSModel();
+            if (profString != "")
+            {
+                itemToadd.ProfName = profString;
+                itemToadd.Build = "Power";
+                itemToadd.AvgDPS = avgDPS;
+                itemToadd.MinDPS = minDPS;
+                itemToadd.MinDPSID = minDPSID;
+                itemToadd.MaxDPS = maxDPS;
+                itemToadd.MaxDPSID = maxDPSID;
+                itemToadd.Entrys = entrys;
+                itemToadd.AvgOverTime = avgDPSTime;
+                GraphList.Add(itemToadd);
+            }
+        }
+        if (classCondiList != null)
+        {
+            int entrys = 0;
+            int minDPS = 0;
+            int maxDPS = 0;
+            int minDPSID = 0;
+            int maxDPSID = 0;
+            int avgDPS = 0;
+            string profString = "";
+            var avgDPSTime = new List<int[]>();
+            foreach (var player in classCondiList)
+            {
+                if (player.bossDPS != 0)
+                {
+                    entrys++;
+                    if (entrys == 1)
+                    {
+                        profString = player.profession;
+                        minDPS = player.bossDPS;
+                        minDPSID = player.logID;
+                        maxDPS = player.bossDPS;
+                        maxDPSID = player.logID;
+                        avgDPS = player.bossDPS;
+                    }
+                    else
+                    {
+                        avgDPS = ((avgDPS * (entrys - 1)) + player.bossDPS) / (entrys);
+                        if (player.bossDPS < minDPS) { minDPS = player.bossDPS; minDPSID = player.logID; }
+                        if (player.bossDPS > maxDPS) { maxDPS = player.bossDPS; maxDPSID = player.logID; }
+                    }
+                    int[] avgOverTimeEntry = new int[3];
+                    avgOverTimeEntry[0] = Int32.Parse(Model.DbList.FirstOrDefault(x => x.ID == player.logID).HtmlFile.Substring(51, 8));
+                    avgOverTimeEntry[1] = player.bossDPS;
+                    avgOverTimeEntry[2] = 1;
+                    bool existing = false;
+                    for (int i = 0; i < avgDPSTime.Count; i++)
+                    {
+                        if (avgDPSTime[i][0] == avgOverTimeEntry[0])
+                        {
+                            avgDPSTime[i][2]++;
+                            avgDPSTime[i][1] = ((avgDPSTime[i][1] * (avgDPSTime[i][2] - 1)) + avgOverTimeEntry[1]) / (avgDPSTime[i][2]);//((avgDPS * (entrys - 1)) + player.bossDPS) / (entrys);
+
+                            existing = true;
+                        }
+                    }
+                    if (existing == false)
+                    {
+                        avgDPSTime.Add(avgOverTimeEntry);
+                    }
+                }
+
+            }
+            var itemToadd = new LuckLogsApp.Models.ProfessionDPSModel();
+            if (profString != "")
+            {
+                itemToadd.ProfName = profString;
+                itemToadd.Build = "Condi";
+                itemToadd.AvgDPS = avgDPS;
+                itemToadd.MinDPSID = minDPSID;
+                itemToadd.MinDPS = minDPS;
+                itemToadd.MaxDPSID = maxDPSID;
+                itemToadd.MaxDPS = maxDPS;
+                itemToadd.Entrys = entrys;
+                itemToadd.AvgOverTime = avgDPSTime;
+                GraphList.Add(itemToadd);
+            }
+        }
+    }
+    GraphList = GraphList.OrderByDescending(x => x.AvgDPS).Reverse().ToList();
+
+}
+<p> @Model.DPSPlayerList.Count()</p>
+<div id="dpsgraph @Model.PartialID" style="height:500px;width:1100px"></div>
+
+<script>
+       
+                        var trace1 = {
+                    y: [@for (int i = 0; i < GraphList.Count(); i++)
+                    { <text>'@(GraphList[i].Build + " " + GraphList[i].ProfName)', </text>}],
+                    x: [@for (int i = 0; i < GraphList.Count(); i++)
+                    { <text>'@GraphList[i].AvgDPS', </text>}],
+                    name: 'Control',
+                    error_x: {
+                        type: 'data',
+                        symmetric: false,
+                        array: [@for (int i = 0; i < GraphList.Count(); i++)
+                        { <text>'@(GraphList[i].MaxDPS - GraphList[i].AvgDPS)', </text>}],
+                        arrayminus: [@for (int i = 0; i < GraphList.Count(); i++)
+                        { <text>'@(GraphList[i].AvgDPS - GraphList[i].MinDPS)', </text>}],
+                        visible: true,
+                        color:'#ffffff',
+                    },
+                    marker: {
+                        color: [@for (int i = 0; i < GraphList.Count(); i++)
+                        {<text>'@ViewData["Color-" + GraphList[i].ProfName]',</text> }]
+                    },
+                    type: 'bar',
+                    orientation: 'h',
+                };
+
+                        var data = [trace1];
+                        var layout = {
+                    title:'Average Boss DPS by Build',
+                    barmode: 'group',
+                    margin: {l:150,},
+                    font: { color: '#ffffff' },
+                    paper_bgcolor:'rgba(0,0,0,0)',
+                    plot_bgcolor:'rgba(0,0,0,0)'};
+                        Plotly.newPlot('dpsgraph @Model.PartialID', data, layout);
+</script>
+<div id="dpstimegraph @Model.PartialID" style="height:auto;width:1100px"></div>
+<script>
+            var traceArray = [@for (int x = 0; x < GraphList.Count; x++)
+            {<text>{
+                type: "scatter",
+                mode: "lines",
+                name: '@(GraphList[x].Build + GraphList[x].ProfName) ',
+                line: { color: '@ViewData["Color-" + GraphList[x].ProfName]' },
+                x: [@for (int i = 0; i < GraphList[x].AvgOverTime.Count; i++)
+                {
+                    string totalDate = GraphList[x].AvgOverTime[i][0].ToString(); string formatedDate = totalDate.Substring(0, 4) + "-" + totalDate.Substring(4, 2) + "-" + totalDate.Substring(6, 2);
+                    <text>'@formatedDate'@if (i < GraphList[x].AvgOverTime.Count - 1)
+                    {<text>,</text>}</text>}],
+                y:[@for (int c = 0; c < GraphList[x].AvgOverTime.Count; c++)
+                { <text> '@GraphList[x].AvgOverTime[c][1]' @if (c < GraphList[x].AvgOverTime.Count - 1)
+    {<text>,</text>}</text>}]
+
+                }@if (x < GraphList.Count - 1)
+                {<text>,</text>}
+                </text>
+            }];
+
+            var data = traceArray;
+
+            var layout = {
+                title: 'Build damage over time',
+                showlegend: true,
+
+                xaxis: {
+                    autorange: true,
+                    range: ['2017-01-17', '@DateTime.Now.ToString("yyyy-MM-dd")'],
+                    rangeselector: {
+                        buttons: [
+                            {
+                                count: 1,
+                                label: '1m',
+                                step: 'month',
+                                stepmode: 'backward'
+                            },
+                            {
+                                count: 6,
+                                label: '6m',
+                                step: 'month',
+                                stepmode: 'backward'
+                            },
+                            { step: 'all' }
+                        ]
+                    },
+                    rangeslider: { range: ['2017-01-17', '@DateTime.Now.ToString("yyyy-MM-dd")'] },
+                    type: 'date'
+                },
+                yaxis: {
+                    autorange: true,
+                    range: [0, 30000],
+                    type: 'linear'
+                },
+                font: { color: '#ffffff' },
+                paper_bgcolor: 'rgba(0,0,0,0)',
+                plot_bgcolor: 'rgba(0,0,0,0)'
+            };
+
+            Plotly.newPlot('dpstimegraph @Model.PartialID', data, layout);
+
+</script>
+<div id="popgraph @Model.PartialID" style="height:auto;width:1100px"></div>
+<script>
+                        var data = [{
+                            values: [@for (int x = 0; x < GraphList.Count; x++)
+                            {<text> '@GraphList[x].Entrys', </text> }],
+                            labels: [@for (int x = 0; x < GraphList.Count; x++)
+                            {<text> '@(GraphList[x].Build + " " + GraphList[x].ProfName)', </text> }],
+                            marker: {
+                                colors: [@for (int i = 0; i < GraphList.Count(); i++)
+                                {<text>'@ViewData["Color-" + GraphList[i].ProfName]',</text> }]
+                            },
+                            hoverinfo: 'label+percent+name',
+                            hole: .4,
+                            type: 'pie'
+                        }];
+
+                        var layout = {
+                            title: 'Build Popularity',
+                            font: { color: '#ffffff' },
+                            paper_bgcolor: 'rgba(0,0,0,0)',
+                            plot_bgcolor: 'rgba(0,0,0,0)'
+
+                        };
+
+                        Plotly.newPlot('popgraph @Model.PartialID', data, layout);
+</script>
+<script>
+ $(function () {
+     $('#stat-avg-table @Model.PartialID').DataTable({
+         "order": [[2, "desc"]]});
+                        })
+</script>
+<table class="display table table-striped table-hover " id="stat-avg-table @Model.PartialID">
+    <thead>
+        <tr>
+
+            <th>
+                Profession
+            </th>
+            <th>
+                Min DPS
+            </th>
+            <th>
+                Avg DPS
+            </th>
+            <th>
+                Max DPS
+            </th>
+            <th>Entries</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{  GraphList = GraphList.OrderByDescending(x => x.AvgDPS).Reverse().ToList();
+            for (int i = 0; i < GraphList.Count(); i++)
+            {
+                <tr>
+                    <td>
+                        @GraphList[i].ProfName <img src="@ViewData[GraphList[i].ProfName]" alt="@GraphList[i].ProfName" title="@GraphList[i].ProfName" height="18" width="18">
+                    @if (GraphList[i].Build == "Condi")
+                    {
+                        <span class="label label-warning">Condi</span>
+                    }
+                    else
+                    {
+                        <span class="label label-danger">Power</span>
+                    }
+                </td>
+                <td><a href="@Url.Action("Logs", "Home", new { id = GraphList[i].MinDPSID })" data-toggle="tooltip" data-html="true" data-placement="right" title="Click to go to Log">@GraphList[i].MinDPS.ToString("N0")</a></td>
+                <td>@GraphList[i].AvgDPS.ToString("N0")</td>
+                <td><a href="@Url.Action("Logs", "Home", new { id = GraphList[i].MaxDPSID })" data-toggle="tooltip" data-html="true" data-placement="right" title="Click to go to Log">@GraphList[i].MaxDPS.ToString("N0")</a></td>
+                <td>@GraphList[i].Entrys</td>
+            </tr>
+            }
+        }
+    </tbody>
+</table>
+

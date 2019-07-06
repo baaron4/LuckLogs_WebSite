@@ -1,0 +1,47 @@
+﻿@{
+    ViewData["Title"] = "Logs";
+    var log = (LuckLogsApp.Models.RaidLog)TempData["Log"];
+}
+
+<nav class="navbar navbar-default">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<h3>@log.BossName</h3>
+		</div>
+		<ul class="nav navbar-nav">
+            @if (log.EVTCFile != null)
+            {
+                <li><p class="navbar-text">EVTC File:<a class="button" href="@log.EVTCFile">Download</a></p></li>
+            }
+            else
+            {
+                <li><p class="navbar-text">EVTC File:Unavailable</p></li>
+            }
+
+		</ul>
+
+	</div>
+</nav>
+
+@*<p>Health: 22021440 Armour: 2061(Toughness: 687)</p>
+    <p>Health bar contribution? If scraping goes well why not:</p>
+    <div class="progress">
+        <div class="progress-bar progress-bar-thief" style="width: 23%" data-toggle="tooltip" data-placement="top" title="" data-original-title="Vanessa Proudmore 23%"></div>
+        <div class="progress-bar progress-bar-warrior" style="width: 20%" data-toggle="tooltip" data-placement="top" title="" data-original-title="Faaron Bladdancer 20%"></div>
+        <div class="progress-bar progress-bar-necro" style="width: 16%" data-toggle="tooltip" data-placement="top" title="" data-original-title="Mitsukis 16%"></div>
+        <div class="progress-bar progress-bar-warrior" style="width: 15%" data-toggle="tooltip" data-placement="top" title="" data-original-title="Satine Belle 15%"></div>
+        <div class="progress-bar progress-bar-thief" style="width: 8%" data-toggle="tooltip" data-placement="top" title="" data-original-title="Shadows Shadowstep 8%"></div>
+        <div class="progress-bar progress-bar-ele" style="width: 6%" data-toggle="tooltip" data-placement="top" title="" data-original-title="Raystall 6%"></div>
+        <div class="progress-bar progress-bar-mesmer" style="width: 5%" data-toggle="tooltip" data-placement="top" title="" data-original-title="Seamus 5%"></div>
+        <div class="progress-bar progress-bar-mesmer" style="width: 3%" data-toggle="tooltip" data-placement="top" title="" data-original-title="Aella Gills 3%"></div>
+        <div class="progress-bar progress-bar-ranger" style="width: 2%" data-toggle="tooltip" data-placement="top" title="" data-original-title="Viurtris 2%"></div>
+        <div class="progress-bar progress-bar-ranger" style="width: 2%" data-toggle="tooltip" data-placement="top" title="" data-original-title="Ira Altariel 2%"></div>
+    </div>
+    *@
+<center>
+  
+            <iframe src="@log.HtmlFile" width="1300" height="3000"></iframe>
+  
+  
+</center>
+

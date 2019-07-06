@@ -1,0 +1,442 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.3\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.3\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
+  <Import Project="..\packages\Microsoft.Net.Compilers.1.3.2\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.1.3.2\build\Microsoft.Net.Compilers.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{93BE50DD-3E57-4386-8FCA-88008184D78B}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>LuckLogsApp</RootNamespace>
+    <AssemblyName>LuckLogsApp</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AWSSDK, Version=2.3.55.2, Culture=neutral, PublicKeyToken=9f476d3089b52be3, processorArchitecture=MSIL">
+      <HintPath>..\packages\AWSSDK.2.3.55.2\lib\net45\AWSSDK.dll</HintPath>
+    </Reference>
+    <Reference Include="Elmah, Version=1.2.14706.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\elmah.corelibrary.1.2.2\lib\Elmah.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="HtmlAgilityPack, Version=1.5.1.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
+      <HintPath>..\packages\HtmlAgilityPack.1.5.1\lib\Net45\HtmlAgilityPack.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.3\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="MoreLinq, Version=2.6.20831.0, Culture=neutral, PublicKeyToken=384d532d7e88985d, processorArchitecture=MSIL">
+      <HintPath>..\packages\morelinq.2.6.0\lib\net40\MoreLinq.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ValueTuple, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.3.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+    </Reference>
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="WebGrease">
+      <Private>True</Private>
+      <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
+    </Reference>
+    <Reference Include="Antlr3.Runtime">
+      <Private>True</Private>
+      <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ApplicationInsights">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.2.2.0\lib\net45\Microsoft.ApplicationInsights.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AI.Agent.Intercept">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.Agent.Intercept.2.0.6\lib\net45\Microsoft.AI.Agent.Intercept.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AI.DependencyCollector">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.DependencyCollector.2.2.0\lib\net45\Microsoft.AI.DependencyCollector.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AI.PerfCounterCollector">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.PerfCounterCollector.2.2.0\lib\net45\Microsoft.AI.PerfCounterCollector.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AI.ServerTelemetryChannel">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.2.2.0\lib\net45\Microsoft.AI.ServerTelemetryChannel.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AI.WindowsServer">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.WindowsServer.2.2.0\lib\net45\Microsoft.AI.WindowsServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AI.Web">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.Web.2.2.0\lib\net45\Microsoft.AI.Web.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\ApplicationController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\RaidLogsController.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201710140537581_Initial.cs" />
+    <Compile Include="Migrations\201710140537581_Initial.Designer.cs">
+      <DependentUpon>201710140537581_Initial.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201710140539170_Custom.cs" />
+    <Compile Include="Migrations\201710140539170_Custom.Designer.cs">
+      <DependentUpon>201710140539170_Custom.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201710140613152_Custom2.cs" />
+    <Compile Include="Migrations\201710140613152_Custom2.Designer.cs">
+      <DependentUpon>201710140613152_Custom2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\CharacterCardEntry.cs" />
+    <Compile Include="Models\GroupProfile.cs" />
+    <Compile Include="Models\GW2APISkill.cs" />
+    <Compile Include="Models\MemoryFile.cs" />
+    <Compile Include="Models\ParseEnums\Activation.cs" />
+    <Compile Include="Models\ParseEnums\BuffRemove.cs" />
+    <Compile Include="Models\ParseEnums\IFF.cs" />
+    <Compile Include="Models\ParseEnums\Result.cs" />
+    <Compile Include="Models\ParseEnums\StateChange.cs" />
+    <Compile Include="Models\ParseModels\Boon.cs" />
+    <Compile Include="Models\ParseModels\BoonLog.cs" />
+    <Compile Include="Models\ParseModels\BoonMap.cs" />
+    <Compile Include="Models\ParseModels\CombatData.cs" />
+    <Compile Include="Models\ParseModels\CombatItem.cs" />
+    <Compile Include="Models\ParseModels\DamageLog.cs" />
+    <Compile Include="Models\ParseModels\GW2APISpec.cs" />
+    <Compile Include="Models\LogInProfile.cs" />
+    <Compile Include="Models\ParseModels\Agent.cs" />
+    <Compile Include="Models\ParseModels\AgentData.cs" />
+    <Compile Include="Models\ParseModels\AgentItem.cs" />
+    <Compile Include="Models\ParseModels\BossData.cs" />
+    <Compile Include="Models\ParseModels\LogData.cs" />
+    <Compile Include="Models\ParseModels\Player.cs" />
+    <Compile Include="Models\ParseModels\SkillData.cs" />
+    <Compile Include="Models\ParseModels\SkillItem.cs" />
+    <Compile Include="Models\PlayerLog.cs" />
+    <Compile Include="Models\ProfessionDPSModel.cs" />
+    <Compile Include="Models\RaidLog.cs" />
+    <Compile Include="Models\ViewModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\css\bootstrap.css" />
+    <Content Include="Content\css\bootstrap.min.css" />
+    <Content Include="Content\images\blue_GW2.jpg" />
+    <Content Include="Content\images\class_icons\120px-Berserker_tango_icon_200px.png" />
+    <Content Include="Content\images\class_icons\120px-Chronomancer_tango_icon_200px.png" />
+    <Content Include="Content\images\class_icons\120px-Ranger_tango_icon_200px.png" />
+    <Content Include="Content\images\class_icons\Daredevil_tango_icon_200px.png" />
+    <Content Include="Content\images\class_icons\Dragonhunter_tango_icon_200px.png" />
+    <Content Include="Content\images\class_icons\Druid_tango_icon_200px.png" />
+    <Content Include="Content\images\class_icons\Elementalist_tango_icon_200px.png" />
+    <Content Include="Content\images\class_icons\Engineer_tango_icon_200px.png" />
+    <Content Include="Content\images\class_icons\Guardian_tango_icon_200px.png" />
+    <Content Include="Content\images\class_icons\Herald_tango_icon_200px.png" />
+    <Content Include="Content\images\class_icons\mesmer-icon.png" />
+    <Content Include="Content\images\class_icons\Necromancer_tango_icon_200px.png" />
+    <Content Include="Content\images\class_icons\Reaper_tango_icon_200px.png" />
+    <Content Include="Content\images\class_icons\Revenant_tango_icon_200px.png" />
+    <Content Include="Content\images\class_icons\Scrapper_tango_icon_200px.png" />
+    <Content Include="Content\images\class_icons\Tempest_tango_icon_200px.png" />
+    <Content Include="Content\images\class_icons\Thief_tango_icon_200px.png" />
+    <Content Include="Content\images\class_icons\Warrior_tango_icon_200px.png" />
+    <Content Include="Content\images\graphs.png" />
+    <Content Include="Content\images\GuildLogo.png" />
+    <Content Include="Content\images\guild_hall.jpg" />
+    <Content Include="Content\images\Leaks\01 - q5Hkcwa.jpg" />
+    <Content Include="Content\images\Leaks\02 - 8NwQEcu.jpg" />
+    <Content Include="Content\images\Leaks\03 - jDWJpWq.jpg" />
+    <Content Include="Content\images\Leaks\04 - i32SnPP.jpg" />
+    <Content Include="Content\images\Leaks\05 - hMtjk9K.jpg" />
+    <Content Include="Content\images\Leaks\06 - cWNz7Bt.jpg" />
+    <Content Include="Content\images\Leaks\07 - 0NUqCvf.jpg" />
+    <Content Include="Content\images\Leaks\08 - 24sTrcH.jpg" />
+    <Content Include="Content\images\Leaks\09 - 18oH12U.jpg" />
+    <Content Include="Content\images\Leaks\10 - dEtGZOP.jpg" />
+    <Content Include="Content\images\Leaks\11 - aOVyWva.jpg" />
+    <Content Include="Content\images\Leaks\12 - Kmzf6Im.jpg" />
+    <Content Include="Content\images\Leaks\13 - LYTMviO.jpg" />
+    <Content Include="Content\images\Leaks\14 - h3aEo7H.jpg" />
+    <Content Include="Content\images\Leaks\15 - trnHFnR.jpg" />
+    <Content Include="Content\images\Leaks\16 - K3fNYCm.jpg" />
+    <Content Include="Content\images\Leaks\17 - 7PxE9Ty.jpg" />
+    <Content Include="Content\images\Leaks\18 - 5Wl7VEv.jpg" />
+    <Content Include="Content\images\Leaks\19 - 9MQJR1r.jpg" />
+    <Content Include="Content\images\Leaks\20 - 5grLreo.jpg" />
+    <Content Include="Content\images\Leaks\21 - jBfiCNs.jpg" />
+    <Content Include="Content\images\Leaks\22 - agyX9gq.jpg" />
+    <Content Include="Content\images\Leaks\23 - PhVPiFI.jpg" />
+    <Content Include="Content\images\Leaks\24 - ypBt9IT.jpg" />
+    <Content Include="Content\images\Leaks\25 - 8GRkK58.jpg" />
+    <Content Include="Content\images\Leaks\26 - KlmxBLc.jpg" />
+    <Content Include="Content\images\Leaks\27 - Ks9CSkM.jpg" />
+    <Content Include="Content\images\Leaks\28 - IBbHH8d.jpg" />
+    <Content Include="Content\images\Leaks\29 - 29cmND8.jpg" />
+    <Content Include="Content\images\Leaks\30 - iodtOkZ.jpg" />
+    <Content Include="Content\images\Leaks\31 - gCvNd2r.jpg" />
+    <Content Include="Content\images\Leaks\32 - uFByXge.jpg" />
+    <Content Include="Content\images\Leaks\33 - VZE2pil.jpg" />
+    <Content Include="Content\images\Leaks\34 - 2TDux2H.jpg" />
+    <Content Include="Content\images\Leaks\35 - Qz2Hwbl.jpg" />
+    <Content Include="Content\images\Leaks\36 - KJoPODr.jpg" />
+    <Content Include="Content\images\Leaks\37 - ukbrQpP.jpg" />
+    <Content Include="Content\images\Leaks\38 - hRwf2NU.jpg" />
+    <Content Include="Content\images\Leaks\39 - iZwq6a4.jpg" />
+    <Content Include="Content\images\Leaks\40 - UUNqxdi.jpg" />
+    <Content Include="Content\images\Leaks\41 - HTd2reh.jpg" />
+    <Content Include="Content\images\Leaks\42 - dHituT8.jpg" />
+    <Content Include="Content\images\Leaks\43 - QDbY6S2.jpg" />
+    <Content Include="Content\images\Leaks\44 - eWCSC89.jpg" />
+    <Content Include="Content\images\Leaks\45 - 2MqFF1W.jpg" />
+    <Content Include="Content\images\Leaks\46 - PwRkSGC.jpg" />
+    <Content Include="Content\images\Leaks\YPyFYQhaEjK20TAunAURHq0171tMNUAL78-N2zfGCQw.jpg" />
+    <Content Include="Content\images\PageLogo.png" />
+    <Content Include="Content\js\bootstrap.js" />
+    <Content Include="Content\js\bootstrap.min.js" />
+    <Content Include="Content\js\jquery.js" />
+    <Content Include="Content\js\jquery.min.js" />
+    <Content Include="Content\js\site.js" />
+    <Content Include="Content\Resource\RaidHeroes\raid_heroes.exe" />
+    <Content Include="Content\Resource\ScraperReddit\CollectLogsToShare.py" />
+    <Content Include="Content\Resource\ScraperReddit\CollectNewLogsToShare.py" />
+    <Content Include="Content\favicon.ico" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Global.asax" />
+    <Content Include="Content\css\Site.css" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="ApplicationInsights.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Resource\RaidHeroes\config.json" />
+    <Content Include="Content\Resource\RaidHeroes\icon_cache" />
+    <Content Include="Content\Resource\ScraperReddit\ChartMakerObjectBasedToShare.R" />
+    <Content Include="Content\Resource\ScraperReddit\RaidHistoryToShare.R" />
+    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\jquery-1.10.2.js" />
+    <Content Include="Scripts\jquery-1.10.2.min.js" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.filedrop.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\moment-with-locales.js" />
+    <Content Include="Scripts\moment-with-locales.min.js" />
+    <Content Include="Scripts\moment.js" />
+    <Content Include="Scripts\moment.min.js" />
+    <Content Include="Scripts\respond.js" />
+    <Content Include="Scripts\respond.min.js" />
+    <Content Include="UploadedFiles\20170428-213944_vg.html" />
+    <Content Include="UploadedFiles\20170622-203456_kc.html" />
+    <Content Include="UploadedFiles\20170627-203141_kc.html" />
+    <Content Include="UploadedFiles\20170627-211015_mo.html" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Views\Web.config" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Home\Logs.cshtml" />
+    <Content Include="Views\RaidLogs\Delete.cshtml" />
+    <Content Include="Views\RaidLogs\Details.cshtml" />
+    <Content Include="Views\RaidLogs\Index.cshtml" />
+    <Content Include="Views\RaidLogs\Parse.cshtml" />
+    <Content Include="UploadedFiles\20170724-221517.evtc" />
+    <Content Include="Views\RaidLogs\Error.cshtml" />
+    <Content Include="Views\Home\Rankings.cshtml" />
+    <Content Include="Views\Home\Leaks.cshtml" />
+    <Content Include="Views\RaidLogs\Scrape.cshtml" />
+    <Content Include="Views\Home\Statistics.cshtml" />
+    <Content Include="Views\Shared\_PatchSelect.cshtml" />
+    <Content Include="Views\RaidLogs\Skills.cshtml" />
+    <Content Include="Views\Home\GroupPerformance.cshtml" />
+    <Content Include="Views\Home\GroupLog.cshtml" />
+    <Content Include="Views\Home\PlayerTable.cshtml" />
+    <Content Include="Views\Home\PlayerPerformance.cshtml" />
+    <Content Include="Views\Home\PlayerStatPartial.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="Views\Application\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\fonts\glyphicons-halflings-regular.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\fonts\glyphicons-halflings-regular.eot" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Scripts\jquery-1.10.2.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201710140537581_Initial.resx">
+      <DependentUpon>201710140537581_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710140539170_Custom.resx">
+      <DependentUpon>201710140539170_Custom.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710140613152_Custom2.resx">
+      <DependentUpon>201710140613152_Custom2.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>52565</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:52565/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.1.3.2\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.1.3.2\build\Microsoft.Net.Compilers.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.3\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.3\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>

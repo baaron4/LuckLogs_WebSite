@@ -1,0 +1,239 @@
+﻿@model LuckLogsApp.Models.ViewModel
+<div class="row">
+    <div class="well well-sm col-md-4">
+        @{ var recentLogID = Model.DbList.Where(x => x.BossName == "Vale Guardian").Max(obj => obj.ID);
+            var recentlog = new List<LuckLogsApp.Models.RaidLog>();
+            recentlog.Add(Model.DbList.FirstOrDefault(y => y.ID == recentLogID));}
+        <h4>@recentlog[recentlog.Count - 1].BossName  @recentlog[recentlog.Count - 1].EVTCFile.ToString().Substring(recentlog[recentlog.Count - 1].EVTCFile.Length - 20, 15) <br />Killtime: @recentlog[recentlog.Count - 1].KillTime </h4>
+        <a href="@Url.Action("Logs", "Home", new { id = recentlog[recentlog.Count - 1].ID })" class="btn btn-success btn-sm">Open</a>
+
+        @{ var recentPlayers = Model.PlList.Where(x => x.logID == recentLogID).ToList();
+            var maxdmg = recentPlayers.Max(x => x.bossDMG);
+            foreach (var player in recentPlayers)
+            {
+                var percent = Decimal.Divide(player.bossDMG, maxdmg) * 100;
+                <div class="progress" style="margin-bottom:2px;">
+                    <div class="progress-bar" style="margin-bottom:0px; width:@percent%; background-color: @ViewData[("Color-" + player.profession)]" data-toggle="tooltip" data-placement="top" title="" data-original-title="@player.playerName @player.build @player.profession @player.bossDPS.ToString("N0") dps">@player.playerName</div>
+                </div>
+            }
+
+        }
+
+    </div>
+    
+    <div class="well well-sm col-md-4">
+        @{  recentLogID = Model.DbList.Where(x => x.BossName == "Gorseval the Multifarious").Max(obj => obj.ID);
+            recentlog.Add(Model.DbList.FirstOrDefault(y => y.ID == recentLogID));}
+        <h4>@recentlog[recentlog.Count - 1].BossName  @recentlog[recentlog.Count - 1].EVTCFile.ToString().Substring(recentlog[recentlog.Count - 1].EVTCFile.Length - 20, 15) <br />Killtime: @recentlog[recentlog.Count - 1].KillTime </h4>
+        <a href="@Url.Action("Logs", "Home", new { id = recentlog[recentlog.Count - 1].ID })" class="btn btn-success btn-sm">Open</a>
+        @{ recentPlayers = Model.PlList.Where(x => x.logID == recentLogID).ToList();
+            maxdmg = recentPlayers.Max(x => x.bossDMG);
+            foreach (var player in recentPlayers)
+            {
+                var percent = Decimal.Divide(player.bossDMG, maxdmg) * 100;
+                <div class="progress" style="margin-bottom:2px;">
+                    <div class="progress-bar" style="margin-bottom:0px; width:@percent%; background-color: @ViewData[("Color-" + player.profession)]" data-toggle="tooltip" data-placement="top" title="" data-original-title="@player.playerName @player.build @player.profession @player.bossDPS.ToString("N0") dps">@player.playerName</div>
+                </div>
+            }
+        }
+    </div>
+
+    <div class="well well-sm col-md-4">
+        @{  recentLogID = Model.DbList.Where(x => x.BossName == "Sabetha the Saboteur").Max(obj => obj.ID);
+            recentlog.Add(Model.DbList.FirstOrDefault(y => y.ID == recentLogID));}
+        <h4>@recentlog[recentlog.Count - 1].BossName  @recentlog[recentlog.Count - 1].EVTCFile.ToString().Substring(recentlog[recentlog.Count - 1].EVTCFile.Length - 20, 15) <br />Killtime: @recentlog[recentlog.Count - 1].KillTime </h4>
+        <a href="@Url.Action("Logs", "Home", new { id = recentlog[recentlog.Count - 1].ID })" class="btn btn-success btn-sm">Open</a>
+        @{ recentPlayers = Model.PlList.Where(x => x.logID == recentLogID).ToList();
+            maxdmg = recentPlayers.Max(x => x.bossDMG);
+            foreach (var player in recentPlayers)
+            {
+                var percent = Decimal.Divide(player.bossDMG, maxdmg) * 100;
+                <div class="progress" style="margin-bottom:2px;">
+                    <div class="progress-bar" style="margin-bottom:0px; width:@percent%; background-color: @ViewData[("Color-" + player.profession)]" data-toggle="tooltip" data-placement="top" title="" data-original-title="@player.playerName @player.build @player.profession @player.bossDPS.ToString("N0") dps">@player.playerName</div>
+                </div>
+            }
+        }
+    </div>
+    @{if ((recentlog[0].EVTCFile.Substring(51, 8) == recentlog[1].EVTCFile.Substring(51, 8)) && (recentlog[0].EVTCFile.Substring(51, 8) == recentlog[2].EVTCFile.Substring(51, 8)))
+        {
+            var timeStart = new TimeSpan(Int32.Parse(recentlog[0].EVTCFile.Substring(60, 2)), Int32.Parse(recentlog[0].EVTCFile.Substring(62, 2)), Int32.Parse(recentlog[0].EVTCFile.Substring(64, 2)));
+            var timeEnd = new TimeSpan(Int32.Parse(recentlog[2].EVTCFile.Substring(60, 2)), Int32.Parse(recentlog[2].EVTCFile.Substring(62, 2)), Int32.Parse(recentlog[2].EVTCFile.Substring(64, 2)));
+            <text><p data-toggle="tooltip" data-placement="top" title="" data-original-title="Cannot add time taken failing 1st encounter[clear time = Last_Boss_Kill - First_Boss_Kill + First_Boss_Duration]">
+                    Wing 1 Clear Time: @timeEnd.Subtract(timeStart).Add(recentlog[0].KillTime)
+                </p></text>
+        }}
+
+
+</div>
+<div>
+    <div class="row">
+        <div class="well well-sm col-md-4">
+            @{  recentLogID = Model.DbList.Where(x => x.BossName == "Slothasor").Max(obj => obj.ID);
+                recentlog.Add(Model.DbList.FirstOrDefault(y => y.ID == recentLogID));}
+            <h4>@recentlog[recentlog.Count - 1].BossName  @recentlog[recentlog.Count - 1].EVTCFile.ToString().Substring(recentlog[recentlog.Count - 1].EVTCFile.Length - 20, 15) <br />Killtime: @recentlog[recentlog.Count - 1].KillTime </h4>
+            <a href="@Url.Action("Logs", "Home", new { id = recentlog[recentlog.Count - 1].ID })" class="btn btn-success btn-sm">Open</a>
+            @{ recentPlayers = Model.PlList.Where(x => x.logID == recentLogID).ToList();
+                maxdmg = recentPlayers.Max(x => x.bossDMG);
+                foreach (var player in recentPlayers)
+                {
+                    var percent = Decimal.Divide(player.bossDMG, maxdmg) * 100;
+                    <div class="progress" style="margin-bottom:2px;">
+                        <div class="progress-bar" style="margin-bottom:0px; width:@percent%; background-color: @ViewData[("Color-" + player.profession)]" data-toggle="tooltip" data-placement="top" title="" data-original-title="@player.playerName @player.build @player.profession @player.bossDPS.ToString("N0") dps">@player.playerName</div>
+                    </div>
+                }
+            }
+        </div>
+
+        <div class="well well-sm col-md-4">
+            @{  recentLogID = Model.DbList.Where(x => x.BossName == "Matthias Gabrel").Max(obj => obj.ID);
+                recentlog.Add(Model.DbList.FirstOrDefault(y => y.ID == recentLogID));}
+            <h4>@recentlog[recentlog.Count - 1].BossName  @recentlog[recentlog.Count - 1].EVTCFile.ToString().Substring(recentlog[recentlog.Count - 1].EVTCFile.Length - 20, 15) <br />Killtime: @recentlog[recentlog.Count - 1].KillTime </h4>
+            <a href="@Url.Action("Logs", "Home", new { id = recentlog[recentlog.Count - 1].ID })" class="btn btn-success btn-sm">Open</a>
+            @{ recentPlayers = Model.PlList.Where(x => x.logID == recentLogID).ToList();
+                maxdmg = recentPlayers.Max(x => x.bossDMG);
+                foreach (var player in recentPlayers)
+                {
+                    var percent = Decimal.Divide(player.bossDMG, maxdmg) * 100;
+                    <div class="progress" style="margin-bottom:2px;">
+                        <div class="progress-bar" style="margin-bottom:0px; width:@percent%; background-color: @ViewData[("Color-" + player.profession)]" data-toggle="tooltip" data-placement="top" title="" data-original-title="@player.playerName @player.build @player.profession @player.bossDPS.ToString("N0") dps">@player.playerName</div>
+                    </div>
+                }
+            }
+        </div>
+
+    </div>
+    @{if ((recentlog[3].EVTCFile.Substring(51, 8) == recentlog[4].EVTCFile.Substring(51, 8)))
+        {
+            var timeStart = new TimeSpan(Int32.Parse(recentlog[3].EVTCFile.Substring(60, 2)), Int32.Parse(recentlog[3].EVTCFile.Substring(62, 2)), Int32.Parse(recentlog[3].EVTCFile.Substring(64, 2)));
+            var timeEnd = new TimeSpan(Int32.Parse(recentlog[4].EVTCFile.Substring(60, 2)), Int32.Parse(recentlog[4].EVTCFile.Substring(62, 2)), Int32.Parse(recentlog[4].EVTCFile.Substring(64, 2)));
+            <text> <p data-toggle="tooltip" data-placement="top" title="" data-original-title="Cannot add time taken failing 1st encounter[clear time = Last_Boss_Kill - First_Boss_Kill + First_Boss_Duration]">
+                    Wing 2 Clear Time: @timeEnd.Subtract(timeStart).Add(recentlog[3].KillTime)
+                </p></text>
+        }}
+</div>
+
+<div>
+    <div class="row">
+        <div class="well well-sm col-md-4">
+            @{  recentLogID = Model.DbList.Where(x => x.BossName == "Keep Construct").Max(obj => obj.ID);
+                recentlog.Add(Model.DbList.FirstOrDefault(y => y.ID == recentLogID));}
+            <h4>@recentlog[recentlog.Count - 1].BossName  @recentlog[recentlog.Count - 1].EVTCFile.ToString().Substring(recentlog[recentlog.Count - 1].EVTCFile.Length - 20, 15) <br />Killtime: @recentlog[recentlog.Count - 1].KillTime </h4>
+            <a href="@Url.Action("Logs", "Home", new { id = recentlog[recentlog.Count - 1].ID })" class="btn btn-success btn-sm">Open</a>
+            @{ recentPlayers = Model.PlList.Where(x => x.logID == recentLogID).ToList();
+                maxdmg = recentPlayers.Max(x => x.bossDMG);
+                foreach (var player in recentPlayers)
+                {
+                    var percent = Decimal.Divide(player.bossDMG, maxdmg) * 100;
+                    <div class="progress" style="margin-bottom:2px;">
+                        <div class="progress-bar" style="margin-bottom:0px; width:@percent%; background-color: @ViewData[("Color-" + player.profession)]" data-toggle="tooltip" data-placement="top" title="" data-original-title="@player.playerName @player.build @player.profession @player.bossDPS.ToString("N0") dps">@player.playerName</div>
+                    </div>
+                }
+            }
+        </div>
+
+        <div class="well well-sm col-md-4">
+            @{  recentLogID = Model.DbList.Where(x => x.BossName == "Xera").Max(obj => obj.ID);
+                recentlog.Add(Model.DbList.FirstOrDefault(y => y.ID == recentLogID));}
+            <h4>@recentlog[recentlog.Count - 1].BossName  @recentlog[recentlog.Count - 1].EVTCFile.ToString().Substring(recentlog[recentlog.Count - 1].EVTCFile.Length - 20, 15) <br />Killtime: @recentlog[recentlog.Count - 1].KillTime </h4>
+            <a href="@Url.Action("Logs", "Home", new { id = recentlog[recentlog.Count - 1].ID })" class="btn btn-success btn-sm">Open</a>
+            @{ recentPlayers = Model.PlList.Where(x => x.logID == recentLogID).ToList();
+                maxdmg = recentPlayers.Max(x => x.bossDMG);
+                foreach (var player in recentPlayers)
+                {
+                    var percent = Decimal.Divide(player.bossDMG, maxdmg) * 100;
+                    <div class="progress" style="margin-bottom:2px;">
+                        <div class="progress-bar" style="margin-bottom:0px; width:@percent%; background-color: @ViewData[("Color-" + player.profession)]" data-toggle="tooltip" data-placement="top" title="" data-original-title="@player.playerName @player.build @player.profession @player.bossDPS.ToString("N0") dps">@player.playerName</div>
+                    </div>
+                }
+            }
+        </div>
+
+    </div>
+    @{if ((recentlog[5].EVTCFile.Substring(51, 8) == recentlog[6].EVTCFile.Substring(51, 8)))
+        {
+            var timeStart = new TimeSpan(Int32.Parse(recentlog[5].EVTCFile.Substring(60, 2)), Int32.Parse(recentlog[5].EVTCFile.Substring(62, 2)), Int32.Parse(recentlog[5].EVTCFile.Substring(64, 2)));
+            var timeEnd = new TimeSpan(Int32.Parse(recentlog[6].EVTCFile.Substring(60, 2)), Int32.Parse(recentlog[6].EVTCFile.Substring(62, 2)), Int32.Parse(recentlog[6].EVTCFile.Substring(64, 2)));
+            <text> <p data-toggle="tooltip" data-placement="top" title="" data-original-title="Cannot add time taken failing 1st encounter[clear time = Last_Boss_Kill - First_Boss_Kill + First_Boss_Duration]">
+                    Wing 3 Clear Time: @timeEnd.Subtract(timeStart).Add(recentlog[5].KillTime) (Cannot add in time taken on Escort)
+                </p></text>
+        }}
+</div>
+
+<div>
+    <div class="row">
+        <div class="well well-sm col-md-3">
+            @{  recentLogID = Model.DbList.Where(x => x.BossName == "Cairn the Indomitable").Max(obj => obj.ID);
+                recentlog.Add(Model.DbList.FirstOrDefault(y => y.ID == recentLogID));}
+            <h4>@recentlog[recentlog.Count - 1].BossName  @recentlog[recentlog.Count - 1].EVTCFile.ToString().Substring(recentlog[recentlog.Count - 1].EVTCFile.Length - 20, 15) <br />Killtime: @recentlog[recentlog.Count - 1].KillTime </h4>
+            <a href="@Url.Action("Logs", "Home", new { id = recentlog[recentlog.Count - 1].ID })" class="btn btn-success btn-sm">Open</a>
+            @{ recentPlayers = Model.PlList.Where(x => x.logID == recentLogID).ToList();
+                maxdmg = recentPlayers.Max(x => x.bossDMG);
+                foreach (var player in recentPlayers)
+                {
+                    var percent = Decimal.Divide(player.bossDMG, maxdmg) * 100;
+                    <div class="progress" style="margin-bottom:2px;">
+                        <div class="progress-bar" style="margin-bottom:0px; width:@percent%; background-color: @ViewData[("Color-" + player.profession)]" data-toggle="tooltip" data-placement="top" title="" data-original-title="@player.playerName @player.build @player.profession @player.bossDPS.ToString("N0") dps">@player.playerName</div>
+                    </div>
+                }
+            }
+        </div>
+
+        <div class="well well-sm col-md-3">
+            @{  recentLogID = Model.DbList.Where(x => x.BossName == "Mursaat Overseer").Max(obj => obj.ID);
+                recentlog.Add(Model.DbList.FirstOrDefault(y => y.ID == recentLogID));}
+            <h4>@recentlog[recentlog.Count - 1].BossName  @recentlog[recentlog.Count - 1].EVTCFile.ToString().Substring(recentlog[recentlog.Count - 1].EVTCFile.Length - 20, 15) <br />Killtime: @recentlog[recentlog.Count - 1].KillTime </h4>
+            <a href="@Url.Action("Logs", "Home", new { id = recentlog[recentlog.Count - 1].ID })" class="btn btn-success btn-sm">Open</a>
+            @{ recentPlayers = Model.PlList.Where(x => x.logID == recentLogID).ToList();
+                maxdmg = recentPlayers.Max(x => x.bossDMG);
+                foreach (var player in recentPlayers)
+                {
+                    var percent = Decimal.Divide(player.bossDMG, maxdmg) * 100;
+                    <div class="progress" style="margin-bottom:2px;">
+                        <div class="progress-bar" style="margin-bottom:0px; width:@percent%; background-color: @ViewData[("Color-" + player.profession)]" data-toggle="tooltip" data-placement="top" title="" data-original-title="@player.playerName @player.build @player.profession @player.bossDPS.ToString("N0") dps">@player.playerName</div>
+                    </div>
+                }
+            }
+        </div>
+
+        <div class="well well-sm col-md-3">
+            @{  recentLogID = Model.DbList.Where(x => x.BossName == "Samarog").Max(obj => obj.ID);
+                recentlog.Add(Model.DbList.FirstOrDefault(y => y.ID == recentLogID));}
+            <h4>@recentlog[recentlog.Count - 1].BossName  @recentlog[recentlog.Count - 1].EVTCFile.ToString().Substring(recentlog[recentlog.Count - 1].EVTCFile.Length - 20, 15) <br />Killtime: @recentlog[recentlog.Count - 1].KillTime </h4>
+            <a href="@Url.Action("Logs", "Home", new { id = recentlog[recentlog.Count - 1].ID })" class="btn btn-success btn-sm">Open</a>
+            @{ recentPlayers = Model.PlList.Where(x => x.logID == recentLogID).ToList();
+                maxdmg = recentPlayers.Max(x => x.bossDMG);
+                foreach (var player in recentPlayers)
+                {
+                    var percent = Decimal.Divide(player.bossDMG, maxdmg) * 100;
+                    <div class="progress" style="margin-bottom:2px;">
+                        <div class="progress-bar" style="margin-bottom:0px; width:@percent%; background-color: @ViewData[("Color-" + player.profession)]" data-toggle="tooltip" data-placement="top" title="" data-original-title="@player.playerName @player.build @player.profession @player.bossDPS.ToString("N0") dps">@player.playerName</div>
+                    </div>
+                }
+            }
+        </div>
+
+        <div class="well well-sm col-md-3">
+            @{  recentLogID = Model.DbList.Where(x => x.BossName == "Deimos").Max(obj => obj.ID);
+                recentlog.Add(Model.DbList.FirstOrDefault(y => y.ID == recentLogID));}
+            <h4>@recentlog[recentlog.Count - 1].BossName  @recentlog[recentlog.Count - 1].EVTCFile.ToString().Substring(recentlog[recentlog.Count - 1].EVTCFile.Length - 20, 15) <br />Killtime: @recentlog[recentlog.Count - 1].KillTime </h4>
+            <a href="@Url.Action("Logs", "Home", new { id = recentlog[recentlog.Count - 1].ID })" class="btn btn-success btn-sm">Open</a>
+            @{ recentPlayers = Model.PlList.Where(x => x.logID == recentLogID).ToList();
+                maxdmg = recentPlayers.Max(x => x.bossDMG);
+                foreach (var player in recentPlayers)
+                {
+                    var percent = Decimal.Divide(player.bossDMG, maxdmg) * 100;
+                    <div class="progress" style="margin-bottom:2px;">
+                        <div class="progress-bar" style="margin-bottom:0px; width:@percent%; background-color: @ViewData[("Color-" + player.profession)]" data-toggle="tooltip" data-placement="top" title="" data-original-title="@player.playerName @player.build @player.profession @player.bossDPS.ToString("N0") dps">@player.playerName</div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+    @{if ((recentlog[7].EVTCFile.Substring(51, 8) == recentlog[8].EVTCFile.Substring(51, 8)) && (recentlog[8].EVTCFile.Substring(51, 8) == recentlog[9].EVTCFile.Substring(51, 8)) && (recentlog[9].EVTCFile.Substring(51, 8) == recentlog[10].EVTCFile.Substring(51, 8)))
+        {
+            var timeStart = new TimeSpan(Int32.Parse(recentlog[7].EVTCFile.Substring(60, 2)), Int32.Parse(recentlog[7].EVTCFile.Substring(62, 2)), Int32.Parse(recentlog[7].EVTCFile.Substring(64, 2)));
+            var timeEnd = new TimeSpan(Int32.Parse(recentlog[10].EVTCFile.Substring(60, 2)), Int32.Parse(recentlog[10].EVTCFile.Substring(62, 2)), Int32.Parse(recentlog[10].EVTCFile.Substring(64, 2)));
+            <text><p data-toggle="tooltip" data-placement="top" title="" data-original-title="Cannot add time taken failing 1st encounter[clear time = Last_Boss_Kill - First_Boss_Kill + First_Boss_Duration]"> Wing 4 Clear Time: @timeEnd.Subtract(timeStart).Add(recentlog[7].KillTime) </p></text>
+        }}
+</div>
+

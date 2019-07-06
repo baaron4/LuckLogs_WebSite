@@ -1,0 +1,474 @@
+﻿
+@{
+    ViewBag.Title = "Rankings";
+    var bossName = TempData["Boss"];
+  
+}
+
+
+@model LuckLogsApp.Models.ViewModel
+<script>
+    $(document).ready(function () {
+        $('#dpsRank-table').DataTable({
+            initComplete: function () {
+                this.api().columns([1, 2, 3,4]).every(function () {
+                    var column = this;
+                    var select = $('<select style="color:black;"><option value="">Show all</option></select>')
+                        .appendTo($(column.footer()).empty())
+                        .on('change', function () {
+                            var val = $.fn.dataTable.util.escapeRegex(
+                                $(this).val()
+                            );
+
+                            column
+                                .search(val ? '^' + val + '$' : '', true, false)
+                                .draw();
+                        });
+
+                    column.data().unique().sort().each(function (d, j) {
+                        var val = $('<div/>').html(d).text();
+                        select.append('<option value="' + val + '">' + val + '</option>');
+                    });
+                });
+            }
+        });
+    });
+  
+    $(function () {
+        $('#chronoRankTable').DataTable({
+            initComplete: function () {
+                this.api().columns([1, 2,3]).every(function () {
+                    var column = this;
+                    var select = $('<select style="color:black;"><option value="">Show all</option></select>')
+                        .appendTo($(column.footer()).empty())
+                        .on('change', function () {
+                            var val = $.fn.dataTable.util.escapeRegex(
+                                $(this).val()
+                            );
+
+                            column
+                                .search(val ? '^' + val + '$' : '', true, false)
+                                .draw();
+                        });
+
+                    column.data().unique().sort().each(function (d, j) {
+                        var val = $('<div/>').html(d).text();
+                        select.append('<option value="' + val + '">' + val + '</option>');
+                    });
+                });
+            }
+        }
+            );
+    })
+    $(function () {
+        $('#druidRankTable').DataTable({
+            initComplete: function () {
+                this.api().columns([1, 2, 3]).every(function () {
+                    var column = this;
+                    var select = $('<select style="color:black;"><option value="">Show all</option></select>')
+                        .appendTo($(column.footer()).empty())
+                        .on('change', function () {
+                            var val = $.fn.dataTable.util.escapeRegex(
+                                $(this).val()
+                            );
+
+                            column
+                                .search(val ? '^' + val + '$' : '', true, false)
+                                .draw();
+                        });
+
+                    column.data().unique().sort().each(function (d, j) {
+                        var val = $('<div/>').html(d).text();
+                        select.append('<option value="' + val + '">' + val + '</option>');
+                    });
+                });
+            }
+        }
+            );
+    })
+    $(function () {
+        $('#warrRankTable').DataTable({
+            initComplete: function () {
+                this.api().columns([1, 2, 3]).every(function () {
+                    var column = this;
+                    var select = $('<select style="color:black;"><option value="">Show all</option></select>')
+                        .appendTo($(column.footer()).empty())
+                        .on('change', function () {
+                            var val = $.fn.dataTable.util.escapeRegex(
+                                $(this).val()
+                            );
+
+                            column
+                                .search(val ? '^' + val + '$' : '', true, false)
+                                .draw();
+                        });
+
+                    column.data().unique().sort().each(function (d, j) {
+                        var val = $('<div/>').html(d).text();
+                        select.append('<option value="' + val + '">' + val + '</option>');
+                    });
+                });
+            }
+        }
+            );
+    })
+
+   
+</script>
+
+
+<div class="row">
+    <h2 style="display: inline;">@bossName Rankings</h2>
+</div>
+<h5>@Html.ActionLink("Go to " + bossName.ToString() + " Statistics", "Statistics", "Home", new { boss = bossName.ToString() }, new { hidefocus = "hidefocus" })</h5>
+
+@*<p>@Session["PatchStart"] and @Session["PatchEnd"] and @Session["TimeSpan"]</p>*@
+
+<ul class="nav nav-tabs" id="rankTabs">
+    <li class="active"><a href="#dps" data-toggle="tab" aria-expanded="false">DPS</a></li>
+    <li class=""><a href="#chrono" data-toggle="tab" aria-expanded="true">Chrono <img src="@ViewData["Chronomancer"]" alt="Chronomancer" title="Chronomancer" height="18" width="18"></a></li>
+    <li class=""><a href="#druid" data-toggle="tab" aria-expanded="true">Druid <img src="@ViewData["Druid"]" alt="Druid" title="Druid" height="18" width="18"></a></li>
+    <li class=""><a href="#warrior" data-toggle="tab" aria-expanded="true">Berserker <img src="@ViewData["Berserker"]" alt="Berserker" title="Berserker" height="18" width="18"></a></li>
+</ul>
+<div id="myTabContent" class="tab-content">
+    <div class="tab-pane fade active in" id="dps">
+        <table class="display table table-striped table-hover " id="dpsRank-table" >
+            <thead>
+                <tr>
+                    <th>
+                        Rank
+                    </th>
+                    <th >
+                        Character
+                    </th>
+                    <th >
+                        Account
+                    </th>
+                    <th>
+                        Class
+                    </th>
+                    <th>
+                        Weapons
+                    </th>
+                    <th >
+                        Boss DPS
+                    </th>
+                    <th >
+                        All DPS 
+                    </th>
+                    <th >
+                        Cleave
+                    </th>
+                    <th>
+                        Log
+                    </th>
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <th>
+                        
+                    </th>
+                    <th>
+                        Character
+                    </th>
+                    <th>
+                        Account
+                    </th>
+                    <th>
+                        Class
+                    </th>
+                    <th>
+                        Weapons
+                    </th>
+                    <th>
+                        
+                    </th>
+                    <th>
+                        
+                    </th>
+                    <th>
+                       
+                    </th>
+                    <th>
+                       
+                    </th>
+                </tr>
+            </tfoot>
+            <tbody>
+                @foreach (LuckLogsApp.Models.PlayerLog item in Model.DPSPlayerList)
+                {
+
+                    <tr>
+                        <td>@item.dpsRank</td>
+                        <td>@item.playerName</td>
+                        <td>@item.accountName</td>
+                        <td>
+                            @item.profession<img src="@ViewData[item.profession]" alt="@item.profession" title="@item.profession" height="18" width="18">@if (item.build == "Condi")
+                            {
+                                <span class="label label-warning">Condi</span>
+                            }
+                            else
+                            {
+                                <span class="label label-danger">Power</span>
+                            }
+                        </td>
+                        <td data-toggle="tooltip" data-html="true" data-container="body" data-placement="right" title="@item.weapons">
+                            @{if (item.weapons != null) {
+                                   <text> @Html.Action("ShortenWeaponString", new { orig = item.weapons }) </text>
+                                          } }
+
+                        </td>
+                        <td data-toggle="tooltip"  data-html="true" data-container="body" data-placement="right" title="@item.bossDMG.ToString("N0") dmg</br>PHYS:@item.bossDPSPhys.ToString("N0") dps|@item.bossDMGPhys.ToString("N0") dmg</br>CONDI:@item.bossDPSCondi.ToString("N0") dps|@item.bossDMGCondi.ToString("N0") dmg">
+                            @item.bossDPS.ToString("N0")
+                        </td>
+                        <td data-toggle="tooltip" data-html="true" data-container="body" data-placement="right" title="@item.allDMG.ToString("N0") dmg</br>PHYS:@item.allDPSPhys.ToString("N0") dps|@item.allDMGPhys.ToString("N0") dmg</br>CONDI:@item.allDPSCondi.ToString("N0") dps|@item.allDMGCondi.ToString("N0") dmg">
+                            @item.allDPS.ToString("N0")
+                        </td>
+                        <td>@((item.allDPS - item.bossDPS).ToString("N0"))</td>
+                        <td>
+                            <a href="@Url.Action("Logs", "Home", new { id = item.logID })" class="btn btn-success btn-sm">@Model.DbList.FirstOrDefault(x => x.ID == item.logID).HtmlFile.Substring(51, 8)</a>
+                           
+                           
+                        </td>
+                    </tr>
+
+                }
+            </tbody>
+        </table>
+
+    </div>
+    <div class="tab-pane fade " id="chrono">
+        <table class="display table table-striped table-hover " id="chronoRankTable">
+            <thead>
+                <tr>
+                    <th>
+                       Rank 
+                    </th>
+                    <th>
+                        Character 
+                    </th>
+                    <th>
+                        Account
+                    </th>
+                    <th>Weapons</th>
+                    <th>
+                       <img src="@ViewData["Quick"]" alt="Quick" title="Group Quickness Uptime" height="18" width="18"> 
+                    </th>
+                    <th>
+                       <img src="@ViewData["Alacrity"]" alt="Alacrity" title="Group Alacrity Uptime" height="18" width="18"> 
+                    </th>
+                    <th>
+                       DPS
+                    </th>
+                    <th>
+                        Log
+                    </th>
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <th>
+                       
+                    </th>
+                    <th>
+                        Character
+                    </th>
+                    <th>
+                        Account
+                    </th>
+                    <th>Weapons</th>
+                    <th>
+                       
+                    </th>
+                    <th>
+                     
+                    </th>
+                    <th>
+                      
+                    </th>
+                    <th>
+                        
+                    </th>
+                </tr>
+            </tfoot>
+            <tbody>
+                @foreach (LuckLogsApp.Models.PlayerLog item in Model.TankPlayerList)
+                {
+                <tr>
+                    <td>@item.suppRank</td>
+                    <td>@item.playerName</td>
+                    <td>@item.accountName</td>
+                    <td>@{if (item.weapons != null) {
+                           <text> @item.weapons </text>
+                                } }</td>
+                    <td><p data-toggle="tooltip" data-html="true" data-container="body" data-placement="right" title="Self Generation: @(item.genSelf_Quickness*100) %</br>Group Generation: @(item.genGroup_Quickness*100) %</br>Off Group generation: @(item.genOGroup_Quickness*100) %</br>Squad generation: @(item.genSquad_Quickness*100) %</br>">@(item.genGroup_Quickness)</p></td>
+                    <td><p data-toggle="tooltip" data-html="true" data-container="body" data-placement="right" title="Self Generation: @(item.genSelf_Alacrity*100) %</br>Group Generation: @(item.genGroup_Alacrity*100) %</br>Off Group generation: @(item.genOGroup_Alacrity*100) %</br>Squad generation: @(item.genSquad_Alacrity*100) %</br>">@(item.genGroup_Alacrity)</p></td>
+                    <td>@item.bossDPS</td>
+                    <td><a href="@Url.Action("Logs", "Home", new { id = item.logID })" class="btn btn-success btn-sm">@Model.DbList.FirstOrDefault(x => x.ID == item.logID).HtmlFile.Substring(51, 8)</a>
+</td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="tab-pane fade" id="druid">
+        <table class="display table table-striped table-hover " id="druidRankTable">
+            <thead>
+                <tr>
+                    <th>
+                        Rank
+                    </th>
+                    <th>
+                        Character
+                    </th>
+                    <th>
+                        Account
+                    </th>
+                    <th>Weapons</th>
+                    <th>
+                        <img src="@ViewData["GoTL"]" alt="GoTL" title="Group Grace of the Land Avg Stacks" height="18" width="18"> 
+                    </th>
+                    <th>
+                        <img src="@ViewData["GoE"]" alt="GoE" title="Personal Glyph of Empowerment Uptime" height="18" width="18"> 
+                    </th>
+                    <th>
+                        <img src="@ViewData["SunSpirit"]" alt="SunSpirit" title="Personal Sun Spirit Uptime" height="18" width="18">  
+                    </th>
+                    <th>
+                        <img src="@ViewData["FrostSpirit"]" alt="FrostSpirit" title="personal Frost Spirit Uptime" height="18" width="18">
+                    </th>
+                    <th>Cleanse</th>
+                    <th>Resurects</th>
+                    <th>
+                        DPS 
+                    </th>
+                    <th>
+                        Log
+                    </th>
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <th> </th>
+                    <th>
+                        Character
+                    </th>
+                    <th>
+                        Account
+                    </th> 
+                    <th>Weapons</th>
+                    <th> </th>
+                    <th> </th>
+                    <th> </th>
+                    <th> </th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th> </th>
+                </tr>
+            </tfoot>
+            <tbody>
+                @foreach (LuckLogsApp.Models.PlayerLog item in Model.HealerPlayerList)
+                {
+                    <tr>
+                        <td>@item.suppRank</td>
+                        <td>@item.playerName</td>
+                        <td>@item.accountName</td>
+                        <td>@{if (item.weapons != null) {
+                               <text> @item.weapons </text>
+                                    } }</td>
+                        <td><p data-toggle="tooltip" data-html="true" data-container="body" data-placement="right" title="Self Generation: @(item.genSelf_GoTL) </br>Group Generation: @(item.genGroup_GoTL) </br>Off Group generation: @(item.genOGroup_GoTL) </br>Squad generation: @(item.genSquad_GoTL) </br>">@(item.genGroup_GoTL ) </p></td>
+                        <td>@item.glyphEmpower %</td>
+                        <td>@item.sunSpirit %</td>
+                        <td>@item.frostSpirit %</td>
+                        <td><p data-toggle="tooltip" data-html="true" data-container="body" data-placement="right" title="@item.condiCleanseTime s worth of condis">@item.condiCleanse </p></td>
+                        <td><p data-toggle="tooltip" data-html="true" data-container="body" data-placement="right" title="@item.resTime s rezing">@item.resurects </p></td>
+                        <td>@item.bossDPS</td>
+                        <td>
+                            <a href="@Url.Action("Logs", "Home", new { id = item.logID })" class="btn btn-success btn-sm">@Model.DbList.FirstOrDefault(x => x.ID == item.logID).HtmlFile.Substring(51, 8)</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="tab-pane fade" id="warrior">
+        <table class="dispaly table table-striped table-hover " id="warrRankTable">
+            <thead>
+                <tr>
+                    <th>
+                        Rank
+                    </th>
+                    <th>
+                        Character
+                    </th>
+                    <th>
+                       Account
+                    </th>
+                    <th>Weapons</th>
+                    <th>
+                        <img src="@ViewData["Might"]" alt="Might" title="Group Might Avg Stacks" height="18" width="18">
+                    </th>
+                    <th>
+                        <img src="@ViewData["Strbanner"]" alt="Strbanner" title="Personal Banner of Strength Uptime" height="18" width="18">
+                    </th>
+                    <th>
+                        <img src="@ViewData["Discbanner"]" alt="Discbanner" title="personal Banner of Discipline Uptime" height="18" width="18">
+                    </th>
+                    <th>
+                       DPS
+                    </th>
+                    <th>
+                        Log
+                    </th>
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <th>
+                    </th>
+                    <th>
+                        Character
+                    </th>
+                    <th>
+                        Account
+                    </th>
+                    <th>Weapons</th>
+                    <th>
+                    </th>
+                    <th>
+                    </th>
+                    <th>
+                    </th>
+                    <th>
+                    </th>
+                    <th>
+                    </th>
+                </tr>
+            </tfoot>
+            <tbody>
+                @foreach (LuckLogsApp.Models.PlayerLog item in Model.MightPlayerList)
+                {
+                    <tr>
+                        <td>@item.suppRank</td>
+                        <td>@item.playerName</td>
+                        <td>@item.accountName</td>
+                        <td>@{if (item.weapons != null) {
+                                <text> @item.weapons</text>
+                            } }</td>
+                        <td><p data-toggle="tooltip" data-html="true" data-container="body" data-placement="right" title="Self Generation: @(item.genSelf_Might) </br>Group Generation: @(item.genGroup_Might) </br>Off Group generation: @(item.genOGroup_Might) </br>Squad generation: @(item.genSquad_Might) </br>">@(item.genGroup_Might ) </p></td>
+                        <td>@item.bannerStr %</td>
+                        <td>@item.bannerDisc %</td>
+                        <td>@item.bossDPS</td>
+                        <td>
+                            <a href="@Url.Action("Logs", "Home", new { id = item.logID })" class="btn btn-success btn-sm">@Model.DbList.FirstOrDefault(x => x.ID == item.logID).HtmlFile.Substring(51, 8)</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+

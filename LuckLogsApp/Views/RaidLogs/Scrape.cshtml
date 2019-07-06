@@ -1,0 +1,76 @@
+﻿@*@model LuckLogsApp.Models.RaidLog*@
+
+@{
+    ViewBag.Title = "Scrape";
+    var log = (LuckLogsApp.Models.RaidLog)TempData["Log"];
+}
+
+<h2>Scrape</h2>
+
+<h3>Scrape this file?</h3>
+<div>
+    <h4>RaidLog</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            EVTCFile
+        </dt>
+
+        <dd>
+          @log.EVTCFile
+        </dd>
+
+        <dt>
+           HtmlFile
+        </dt>
+
+        <dd>
+            @log.HtmlFile
+        </dd>
+
+        <dt>
+            Boss name
+        </dt>
+
+        <dd>
+            @log.BossName
+        </dd>
+
+        <dt>
+            Sucess
+        </dt>
+
+        <dd>
+            @log.Sucess
+
+        </dd>
+
+        <dt>
+           Date Uploaded
+        </dt>
+
+        <dd>
+            @log.Date
+        </dd>
+
+        <dt>
+            KillTime
+        </dt>
+
+        <dd>
+            @log.KillTime
+        </dd>
+
+        
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Scrape" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

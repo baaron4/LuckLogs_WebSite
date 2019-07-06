@@ -1,0 +1,654 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+@model LuckLogsApp.Models.ViewModel
+<div class="btn-group btn-group-justified">
+    <a href="https://www.deltaconnected.com/arcdps/" class="btn btn-default" title="DPS Meter for GW2">ArcDps</a>
+    <a href="https://raidheroes.tk/" class="btn btn-default" title="Parser for EVTC files">RaidHeroes</a>
+    <a href="http://qtfy.eu/builds/" class="btn btn-default" title="meta raid builds by QT">Raid Builds</a>
+    <a href="http://qtfy.eu/benchmarks/" class="btn btn-default" title="Build Benchmarks by QT">Raid Benchmarks</a>
+    <a href='@Url.Action("Skills", "RaidLogs")' class="btn btn-default" title="View all the skills gathered from the GW2 API">Skills</a>
+    <a href='@Url.Action("Leaks", "Home")' class="btn btn-default" title="Leaks for Expansion 2!">Pssst Leaks</a>
+</div>
+<p>@ViewData["Patch"]</p>
+@*<div class="alert alert-dismissible alert-danger">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <strong>RaidHeroes website has not been available for months now and is not updated for PoF.</br> 
+    Due to this: Account names are no longer available, and I am working on a workaround for finding your PoF spec
+    </strong> 
+</div>*@
+<h5>@Html.Raw(Model.DbList.Count().ToString("N0")) total logs uploaded and @Html.Raw(Model.PlList.Count().ToString("N0")) player entries</h5>
+@{var rinLogs = Model.PlList.Where(x => x.accountName == "Rinin.1640").ToList();
+    int rinDed = 0;
+    int rindowns = 0;
+    foreach (var rinlog in rinLogs) {
+        if (rinlog.timeDead.Seconds > 0) {
+            rinDed++;
+        }
+        rindowns = rindowns + rinlog.downs;
+       
+    }
+    }
+<h3>Rinin got carried @rinDed times! Ate the concrete @rindowns times!</h3>
+<div class="panel-group" id="accordion">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">
+                   Welcome to LuckLogs
+                </a>
+            </h4>
+        </div>
+        <div id="collapse1" class="panel-collapse collapse in">
+            <div class="panel-body text-center">
+               This website was designed to view the statistical trends of raiding in Guild Wars 2. 
+                By collecting ARCDPS generated raidlogs into one place they can be analyzed and compared over periods of time.
+                Due to lack of expierience I am keeping the site limited to just our LUCK static until I attempt community wide growth.
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">
+                    How to?
+                </a>
+            </h4>
+        </div>
+        <div id="collapse2" class="panel-collapse collapse">
+            <div class="panel-body">
+                For now just observe the data. The Log Upload Page is off limits to any one who isnt an administrator. 
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">
+                   To do list
+                </a>
+            </h4>
+        </div>
+        <div id="collapse3" class="panel-collapse collapse">
+            <div class="panel-body">
+                <ul>
+                    <li>Load header as Partial View</li>
+                    <ul>
+                        <li>only load log table if opened(?)</li>
+                        
+                        <li>Log In page</li>
+                        <ul>
+                            <li>Pysically store logs seperatly per user (filenames are time based)</li>
+                            <li>attatch uploader to DB log entry</li>
+                            <li> "Group" Feature that allows the user to view the stats for just their group and see how they may eb improveing</li>
+                        </ul>
+                    </ul>
+                    <li>Report Log Feature</li>
+                    <ul>
+                        <li>Put Flag in all tables</li>
+                        <ul>
+                            <li>If admin flags log get 100% unreliablilty rate</li>
+                            <li>If scrape detects odditys give 50% </li>
+                            <li>Users get some percentage (?)</li>
+                        </ul>
+                    </ul>
+                    <li>Streamline Upload process(enum it?/Give users longer wait times?/limit uploads?)</li>
+                    <ul>
+                       
+                       
+                        <li>Scrape mechanic specefic values,(can find canoneers on sab !)this could involve splitting the playerlogs db table per boss so they each have a mechanic value, useing model hereditary in C sharp*</li>
+                        <li>Implement Raid Heroes onto webserver</li>
+                        <li>Consider building custom parser</li>
+                        <li>Potential program that can be given folder location and grabs all available logs?</li>
+                    </ul>
+                    
+                </ul>
+                * Do first(ish)
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <h2>Top Scoring Players</h2>
+    <div id="myCarousel" class="carousel slide" data-ride="carousel">
+        <!-- Indicators -->
+        <ol class="carousel-indicators">
+            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+            <li data-target="#myCarousel" data-slide-to="1"></li>
+            <li data-target="#myCarousel" data-slide-to="2"></li>
+            <li data-target="#myCarousel" data-slide-to="3"></li>
+        </ol>
+
+        <!-- Wrapper for slides -->
+        <div class="carousel-inner">
+            <div class="item active">
+                <h3>Wing 1</h3>
+                <div class="row">
+                    @{ var topLog = Model.DPSPlayerList.FirstOrDefault(q => q.bossName == "Vale Guardian");}
+                      <div class="col-md-3">
+                        <ul class="list-group">
+                            <li class="list-group-item list-group-item-info"><center><span class="glyphicon glyphicon-star" style="color:yellow"></span> @topLog.bossName <span class="glyphicon glyphicon-star" style="color:yellow"></span></center></li>
+                            <li class="list-group-item"> <center>@topLog.playerName <img src = "@ViewData[topLog.profession]" alt="@topLog.profession" title="@topLog.profession" height="18" width="18">@if (topLog.build == "Condi")
+                            { <span class="label label-warning">Condi</span>}
+                            else
+                            { <span class="label label-danger">Power</span>} 
+                                </center></li>
+                            <li class="list-group-item"><center>@topLog.accountName</center></li>
+                            <li class="list-group-item"><center>@topLog.bossDPS.ToString("N0") DPS</center></li>
+                            <li class="list-group-item">
+                                <div class="btn-group btn-group-justified">
+                                    <a href = "@Url.Action("Logs", "Home", new { id = topLog.logID })" class="btn btn-default">Log</a>
+                                    <a href = "@Url.Action("Rankings", "Home", new { boss = topLog.bossName })" class="btn btn-default">Stat</a>
+                                    <a href = "@Url.Action("PlayerPerformance", "Home", new { acctname = topLog.accountName })" class="btn btn-default">Profile</a>
+                                 </div>
+                            </li>
+                        </ul>
+                    </div>
+                       
+                    @{topLog = Model.DPSPlayerList.FirstOrDefault(q => q.bossName == "Gorseval the Multifarious");}
+                    <div class="col-md-3">
+                        <ul class="list-group">
+                            <li class="list-group-item list-group-item-danger"><center><span class="glyphicon glyphicon-star" style="color:yellow"></span> @topLog.bossName <span class="glyphicon glyphicon-star" style="color:yellow"></span></center></li>
+                            <li class="list-group-item">
+                                <center>
+                                    @topLog.playerName <img src="@ViewData[topLog.profession]" alt="@topLog.profession" title="@topLog.profession" height="18" width="18">@if (topLog.build == "Condi")
+                                    { <span class="label label-warning">Condi</span>}
+                                    else
+                                    { <span class="label label-danger">Power</span>}
+                                </center>
+                            </li>
+                            <li class="list-group-item"><center>@topLog.accountName</center></li>
+                            <li class="list-group-item"><center>@topLog.bossDPS.ToString("N0") DPS</center></li>
+                            <li class="list-group-item">
+                                <div class="btn-group btn-group-justified">
+                                    <a href="@Url.Action("Logs", "Home", new { id = topLog.logID })" class="btn btn-default">Log</a>
+                                    <a href="@Url.Action("Rankings", "Home", new { boss = topLog.bossName })" class="btn btn-default">Stat</a>
+                                    <a href="@Url.Action("PlayerPerformance", "Home", new { acctname = topLog.accountName })" class="btn btn-default">Profile</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    @{topLog = Model.DPSPlayerList.FirstOrDefault(q => q.bossName == "Sabetha the Saboteur");}
+                    <div class="col-md-3">
+                        <ul class="list-group">
+                            <li class="list-group-item list-group-item-warning"><center><span class="glyphicon glyphicon-star" style="color:yellow"></span> @topLog.bossName <span class="glyphicon glyphicon-star" style="color:yellow"></span></center></li>
+                            <li class="list-group-item">
+                                <center>
+                                    @topLog.playerName <img src="@ViewData[topLog.profession]" alt="@topLog.profession" title="@topLog.profession" height="18" width="18">@if (topLog.build == "Condi")
+                                    { <span class="label label-warning">Condi</span>}
+                                    else
+                                    { <span class="label label-danger">Power</span>}
+                                </center>
+                            </li>
+                            <li class="list-group-item"><center>@topLog.accountName</center></li>
+                            <li class="list-group-item"><center>@topLog.bossDPS.ToString("N0") DPS</center></li>
+                            <li class="list-group-item">
+                                <div class="btn-group btn-group-justified">
+                                    <a href="@Url.Action("Logs", "Home", new { id = topLog.logID })" class="btn btn-default">Log</a>
+                                    <a href="@Url.Action("Rankings", "Home", new { boss = topLog.bossName })" class="btn btn-default">Stat</a>
+                                    <a href="@Url.Action("PlayerPerformance", "Home", new { acctname = topLog.accountName })" class="btn btn-default">Profile</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="item">
+                <h3>Wing 2</h3>
+                <div class="row">
+                    @{topLog = Model.DPSPlayerList.FirstOrDefault(q => q.bossName == "Slothasor");}
+                    <div class="col-md-3">
+                        <ul class="list-group">
+                            <li class="list-group-item list-group-item-success"><center><span class="glyphicon glyphicon-star" style="color:yellow"></span> @topLog.bossName <span class="glyphicon glyphicon-star" style="color:yellow"></span></center></li>
+                            <li class="list-group-item">
+                                <center>
+                                    @topLog.playerName <img src="@ViewData[topLog.profession]" alt="@topLog.profession" title="@topLog.profession" height="18" width="18">@if (topLog.build == "Condi")
+                                    { <span class="label label-warning">Condi</span>}
+                                    else
+                                    { <span class="label label-danger">Power</span>}
+                                </center>
+                            </li>
+                            <li class="list-group-item"><center>@topLog.accountName</center></li>
+                            <li class="list-group-item"><center>@topLog.bossDPS.ToString("N0") DPS</center></li>
+                            <li class="list-group-item">
+                                <div class="btn-group btn-group-justified">
+                                    <a href="@Url.Action("Logs", "Home", new { id = topLog.logID })" class="btn btn-default">Log</a>
+                                    <a href="@Url.Action("Rankings", "Home", new { boss = topLog.bossName})" class="btn btn-default">Stat</a>
+                                    <a href="@Url.Action("PlayerPerformance", "Home", new { acctname = topLog.accountName })" class="btn btn-default">Profile</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                   
+                    @{topLog = Model.DPSPlayerList.FirstOrDefault(q => q.bossName == "Matthias Gabrel");}
+                    <div class="col-md-3">
+                        <ul class="list-group">
+                            <li class="list-group-item list-group-item-warning"><center><span class="glyphicon glyphicon-star" style="color:yellow"></span> @topLog.bossName <span class="glyphicon glyphicon-star" style="color:yellow"></span></center></li>
+                            <li class="list-group-item">
+                                <center>
+                                    @topLog.playerName <img src="@ViewData[topLog.profession]" alt="@topLog.profession" title="@topLog.profession" height="18" width="18">@if (topLog.build == "Condi")
+                                    { <span class="label label-warning">Condi</span>}
+                                    else
+                                    { <span class="label label-danger">Power</span>}
+                                </center>
+                            </li>
+                            <li class="list-group-item"><center>@topLog.accountName</center></li>
+                            <li class="list-group-item"><center>@topLog.bossDPS.ToString("N0") DPS</center></li>
+                            <li class="list-group-item">
+                                <div class="btn-group btn-group-justified">
+                                    <a href="@Url.Action("Logs", "Home", new { id = topLog.logID })" class="btn btn-default">Log</a>
+                                    <a href="@Url.Action("Rankings", "Home", new { boss = topLog.bossName })" class="btn btn-default">Stat</a>
+                                    <a href="@Url.Action("PlayerPerformance", "Home", new { acctname = topLog.accountName })" class="btn btn-default">Profile</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="item">
+                <h3>Wing 3</h3>
+                <div class="row">
+                   
+                    @{topLog = Model.DPSPlayerList.FirstOrDefault(q => q.bossName == "Keep Construct");}
+                    <div class="col-md-3">
+                        <ul class="list-group">
+                            <li class="list-group-item list-group-item-danger"><center><span class="glyphicon glyphicon-star" style="color:yellow"></span> @topLog.bossName <span class="glyphicon glyphicon-star" style="color:yellow"></span></center></li>
+                            <li class="list-group-item">
+                                <center>
+                                    @topLog.playerName <img src="@ViewData[topLog.profession]" alt="@topLog.profession" title="@topLog.profession" height="18" width="18">@if (topLog.build == "Condi")
+                                    { <span class="label label-warning">Condi</span>}
+                                    else
+                                    { <span class="label label-danger">Power</span>}
+                                </center>
+                            </li>
+                            <li class="list-group-item"><center>@topLog.accountName</center></li>
+                            <li class="list-group-item"><center>@topLog.bossDPS.ToString("N0") DPS</center></li>
+                            <li class="list-group-item">
+                                <div class="btn-group btn-group-justified">
+                                    <a href="@Url.Action("Logs", "Home", new { id = topLog.logID })" class="btn btn-default">Log</a>
+                                    <a href="@Url.Action("Rankings", "Home", new { boss = topLog.bossName })" class="btn btn-default">Stat</a>
+                                    <a href="@Url.Action("PlayerPerformance", "Home", new { acctname = topLog.accountName })" class="btn btn-default">Profile</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    @{topLog = Model.DPSPlayerList.FirstOrDefault(q => q.bossName == "Xera");}
+                    <div class="col-md-3">
+                        <ul class="list-group">
+                            <li class="list-group-item list-group-item-info"><center><span class="glyphicon glyphicon-star" style="color:yellow"></span> @topLog.bossName <span class="glyphicon glyphicon-star" style="color:yellow"></span></center></li>
+                            <li class="list-group-item">
+                                <center>
+                                    @topLog.playerName <img src="@ViewData[topLog.profession]" alt="@topLog.profession" title="@topLog.profession" height="18" width="18">@if (topLog.build == "Condi")
+                                    { <span class="label label-warning">Condi</span>}
+                                    else
+                                    { <span class="label label-danger">Power</span>}
+                                </center>
+                            </li>
+                            <li class="list-group-item"><center>@topLog.accountName</center></li>
+                            <li class="list-group-item"><center>@topLog.bossDPS.ToString("N0") DPS</center></li>
+                            <li class="list-group-item">
+                                <div class="btn-group btn-group-justified">
+                                    <a href="@Url.Action("Logs", "Home", new { id = topLog.logID })" class="btn btn-default">Log</a>
+                                    <a href="@Url.Action("Rankings", "Home", new { boss = topLog.bossName})" class="btn btn-default">Stat</a>
+                                    <a href="@Url.Action("PlayerPerformance", "Home", new { acctname = topLog.accountName })" class="btn btn-default">Profile</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <h3>Wing 4</h3>
+                <div class="container">
+                    <div class="row">
+                        @{topLog = Model.DPSPlayerList.FirstOrDefault(q => q.bossName == "Cairn the Indomitable");}
+                        <div class="col-md-3">
+                            <ul class="list-group">
+                                <li class="list-group-item list-group-item-danger"><center><span class="glyphicon glyphicon-star" style="color:yellow"></span> @topLog.bossName <span class="glyphicon glyphicon-star" style="color:yellow"></span></center></li>
+                                <li class="list-group-item">
+                                    <center>
+                                        @topLog.playerName <img src="@ViewData[topLog.profession]" alt="@topLog.profession" title="@topLog.profession" height="18" width="18">@if (topLog.build == "Condi")
+                                        { <span class="label label-warning">Condi</span>}
+                                        else
+                                        { <span class="label label-danger">Power</span>}
+                                    </center>
+                                </li>
+                                <li class="list-group-item"><center>@topLog.accountName</center></li>
+                                <li class="list-group-item"><center>@topLog.bossDPS.ToString("N0") DPS</center></li>
+                                <li class="list-group-item">
+                                    <div class="btn-group btn-group-justified">
+                                        <a href="@Url.Action("Logs", "Home", new { id = topLog.logID })" class="btn btn-default">Log</a>
+                                        <a href="@Url.Action("Rankings", "Home", new { boss = topLog.bossName })" class="btn btn-default">Stat</a>
+                                        <a href="@Url.Action("PlayerPerformance", "Home", new { acctname = topLog.accountName })" class="btn btn-default">Profile</a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        @{topLog = Model.DPSPlayerList.FirstOrDefault(q => q.bossName == "Mursaat Overseer");}
+                        <div class="col-md-3">
+                            <ul class="list-group">
+                                <li class="list-group-item list-group-item-warning"><center><span class="glyphicon glyphicon-star" style="color:yellow"></span> @topLog.bossName <span class="glyphicon glyphicon-star" style="color:yellow"></span></center></li>
+                                <li class="list-group-item">
+                                    <center>
+                                        @topLog.playerName <img src="@ViewData[topLog.profession]" alt="@topLog.profession" title="@topLog.profession" height="18" width="18">@if (topLog.build == "Condi")
+                                        { <span class="label label-warning">Condi</span>}
+                                        else
+                                        { <span class="label label-danger">Power</span>}
+                                    </center>
+                                </li>
+                                <li class="list-group-item"><center>@topLog.accountName</center></li>
+                                <li class="list-group-item"><center>@topLog.bossDPS.ToString("N0") DPS</center></li>
+                                <li class="list-group-item">
+                                    <div class="btn-group btn-group-justified">
+                                        <a href="@Url.Action("Logs", "Home", new { id = topLog.logID })" class="btn btn-default">Log</a>
+                                        <a href="@Url.Action("Rankings", "Home", new { boss = topLog.bossName })" class="btn btn-default">Stat</a>
+                                        <a href="@Url.Action("PlayerPerformance", "Home", new { acctname = topLog.accountName })" class="btn btn-default">Profile</a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        @{topLog = Model.DPSPlayerList.FirstOrDefault(q => q.bossName == "Samarog");}
+                        <div class="col-md-3">
+                            <ul class="list-group">
+                                <li class="list-group-item list-group-item-info"><center><span class="glyphicon glyphicon-star" style="color:yellow"></span> @topLog.bossName <span class="glyphicon glyphicon-star" style="color:yellow"></span></center></li>
+                                <li class="list-group-item">
+                                    <center>
+                                        @topLog.playerName <img src="@ViewData[topLog.profession]" alt="@topLog.profession" title="@topLog.profession" height="18" width="18">@if (topLog.build == "Condi")
+                                        { <span class="label label-warning">Condi</span>}
+                                        else
+                                        { <span class="label label-danger">Power</span>}
+                                    </center>
+                                </li>
+                                <li class="list-group-item"><center>@topLog.accountName</center></li>
+                                <li class="list-group-item"><center>@topLog.bossDPS.ToString("N0") DPS</center></li>
+                                <li class="list-group-item">
+                                    <div class="btn-group btn-group-justified">
+                                        <a href="@Url.Action("Logs", "Home", new { id = topLog.logID })" class="btn btn-default">Log</a>
+                                        <a href="@Url.Action("Rankings", "Home", new { boss = topLog.bossName })" class="btn btn-default">Stat</a>
+                                        <a href="@Url.Action("PlayerPerformance", "Home", new { acctname = topLog.accountName })" class="btn btn-default">Profile</a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        @{topLog = Model.DPSPlayerList.FirstOrDefault(q => q.bossName == "Deimos");}
+                        <div class="col-md-3">
+                            <ul class="list-group">
+                                <li class="list-group-item list-group-item-success"><center><span class="glyphicon glyphicon-star" style="color:yellow"></span> @topLog.bossName <span class="glyphicon glyphicon-star" style="color:yellow"></span></center></li>
+                                <li class="list-group-item">
+                                    <center>
+                                        @topLog.playerName <img src="@ViewData[topLog.profession]" alt="@topLog.profession" title="@topLog.profession" height="18" width="18">@if (topLog.build == "Condi")
+                                        { <span class="label label-warning">Condi</span>}
+                                        else
+                                        { <span class="label label-danger">Power</span>}
+                                    </center>
+                                </li>
+                                <li class="list-group-item"><center>@topLog.accountName</center></li>
+                                <li class="list-group-item"><center>@topLog.bossDPS.ToString("N0") DPS</center></li>
+                                <li class="list-group-item">
+                                    <div class="btn-group btn-group-justified">
+                                        <a href="@Url.Action("Logs", "Home", new { id = topLog.logID })" class="btn btn-default">Log</a>
+                                        <a href="@Url.Action("Rankings", "Home", new { boss = topLog.bossName})" class="btn btn-default">Stat</a>
+                                        <a href="@Url.Action("PlayerPerformance", "Home", new { acctname = topLog.accountName })" class="btn btn-default">Profile</a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Left and right controls -->
+        @*<a class="left carousel-control" href="#myCarousel" data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="right carousel-control" href="#myCarousel" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right"></span>
+            <span class="sr-only">Next</span>
+        </a>*@
+    </div>
+
+@*<div id="recentLogs">
+        <h2>Recent Logs</h2>
+        <div class="row">
+            <div class="well well-sm col-md-4">
+                @{ var recentLogID = Model.DbList.Where(x => x.BossName == "Vale Guardian").Max(obj => obj.ID);
+                    var recentlog = new List<LuckLogsApp.Models.RaidLog>();
+                    recentlog.Add(Model.DbList.FirstOrDefault(y => y.ID == recentLogID));}
+                <h4>@recentlog[recentlog.Count - 1].BossName  @recentlog[recentlog.Count - 1].EVTCFile.ToString().Substring(recentlog[recentlog.Count - 1].EVTCFile.Length - 20, 15) <br />Killtime: @recentlog[recentlog.Count - 1].KillTime </h4>
+               <a href="@Url.Action("Logs", "Home", new { id = recentlog[recentlog.Count - 1].ID })" class="btn btn-success btn-sm">Open</a>
+               
+                @{ var recentPlayers = Model.PlList.Where(x => x.logID == recentLogID).ToList();
+                    var maxdmg = recentPlayers.Max(x => x.bossDMG);
+                    foreach (var player in recentPlayers)
+                    {
+                        var percent = Decimal.Divide(player.bossDMG, maxdmg) * 100;
+                        <div class="progress" style="margin-bottom:2px;">
+                            <div class="progress-bar" style="margin-bottom:0px; width:@percent%; background-color: @ViewData[("Color-" + player.profession)]" data-toggle="tooltip" data-placement="top" title="" data-original-title="@player.playerName @player.build @player.profession @player.bossDPS.ToString("N0") dps">@player.playerName</div>
+                        </div>
+                    }
+
+                }
+                    
+            </div>
+
+            <div class="well well-sm col-md-4">
+                @{  recentLogID = Model.DbList.Where(x => x.BossName == "Gorseval the Multifarious").Max(obj => obj.ID);
+                    recentlog.Add(Model.DbList.FirstOrDefault(y => y.ID == recentLogID));}
+                <h4>@recentlog[recentlog.Count - 1].BossName  @recentlog[recentlog.Count - 1].EVTCFile.ToString().Substring(recentlog[recentlog.Count - 1].EVTCFile.Length - 20, 15) <br />Killtime: @recentlog[recentlog.Count - 1].KillTime </h4>
+                <a href="@Url.Action("Logs", "Home", new { id = recentlog[recentlog.Count - 1].ID })" class="btn btn-success btn-sm">Open</a>
+                @{ recentPlayers = Model.PlList.Where(x => x.logID == recentLogID).ToList();
+                    maxdmg = recentPlayers.Max(x => x.bossDMG);
+                    foreach (var player in recentPlayers)
+                    {
+                        var percent = Decimal.Divide(player.bossDMG, maxdmg) * 100;
+                        <div class="progress" style="margin-bottom:2px;">
+                            <div class="progress-bar" style="margin-bottom:0px; width:@percent%; background-color: @ViewData[("Color-" + player.profession)]" data-toggle="tooltip" data-placement="top" title="" data-original-title="@player.playerName @player.build @player.profession @player.bossDPS.ToString("N0") dps">@player.playerName</div>
+                        </div>
+                    }
+                }
+            </div>
+
+            <div class="well well-sm col-md-4">
+                @{  recentLogID = Model.DbList.Where(x => x.BossName == "Sabetha the Saboteur").Max(obj => obj.ID);
+                    recentlog.Add(Model.DbList.FirstOrDefault(y => y.ID == recentLogID));}
+                <h4>@recentlog[recentlog.Count - 1].BossName  @recentlog[recentlog.Count - 1].EVTCFile.ToString().Substring(recentlog[recentlog.Count - 1].EVTCFile.Length - 20, 15) <br />Killtime: @recentlog[recentlog.Count - 1].KillTime </h4>
+                <a href="@Url.Action("Logs", "Home", new { id = recentlog[recentlog.Count - 1].ID })" class="btn btn-success btn-sm">Open</a>
+                @{ recentPlayers = Model.PlList.Where(x => x.logID == recentLogID).ToList();
+                    maxdmg = recentPlayers.Max(x => x.bossDMG);
+                    foreach (var player in recentPlayers)
+                    {
+                        var percent = Decimal.Divide(player.bossDMG, maxdmg) * 100;
+                        <div class="progress" style="margin-bottom:2px;">
+                            <div class="progress-bar" style="margin-bottom:0px; width:@percent%; background-color: @ViewData[("Color-" + player.profession)]" data-toggle="tooltip" data-placement="top" title="" data-original-title="@player.playerName @player.build @player.profession @player.bossDPS.ToString("N0") dps">@player.playerName</div>
+                        </div>
+                    }
+                }
+            </div>
+            @{if ((recentlog[0].EVTCFile.Substring(51, 8) == recentlog[1].EVTCFile.Substring(51, 8)) && (recentlog[0].EVTCFile.Substring(51, 8) == recentlog[2].EVTCFile.Substring(51, 8))) {
+                    var timeStart = new TimeSpan(Int32.Parse(recentlog[0].EVTCFile.Substring(60, 2)), Int32.Parse(recentlog[0].EVTCFile.Substring(62, 2)), Int32.Parse(recentlog[0].EVTCFile.Substring(64, 2)));
+                    var timeEnd = new TimeSpan(Int32.Parse(recentlog[2].EVTCFile.Substring(60, 2)), Int32.Parse(recentlog[2].EVTCFile.Substring(62, 2)), Int32.Parse(recentlog[2].EVTCFile.Substring(64, 2)));
+                   <text><p data-toggle="tooltip" data-placement="top" title="" data-original-title="Cannot add time taken failing 1st encounter[clear time = Last_Boss_Kill - First_Boss_Kill + First_Boss_Duration]">
+    Wing 1 Clear Time: @timeEnd.Subtract(timeStart).Add(recentlog[0].KillTime) </p></text>
+    }}
+
+
+</div>
+        <div >
+            <div class="row">
+                <div class="well well-sm col-md-4">
+                    @{  recentLogID = Model.DbList.Where(x => x.BossName == "Slothasor").Max(obj => obj.ID);
+                        recentlog.Add(Model.DbList.FirstOrDefault(y => y.ID == recentLogID));}
+                    <h4>@recentlog[recentlog.Count - 1].BossName  @recentlog[recentlog.Count - 1].EVTCFile.ToString().Substring(recentlog[recentlog.Count - 1].EVTCFile.Length - 20, 15) <br />Killtime: @recentlog[recentlog.Count - 1].KillTime </h4>
+                    <a href="@Url.Action("Logs", "Home", new { id = recentlog[recentlog.Count - 1].ID })" class="btn btn-success btn-sm">Open</a>
+                    @{ recentPlayers = Model.PlList.Where(x => x.logID == recentLogID).ToList();
+                        maxdmg = recentPlayers.Max(x => x.bossDMG);
+                        foreach (var player in recentPlayers)
+                        {
+                            var percent = Decimal.Divide(player.bossDMG, maxdmg) * 100;
+                            <div class="progress" style="margin-bottom:2px;">
+                                <div class="progress-bar" style="margin-bottom:0px; width:@percent%; background-color: @ViewData[("Color-" + player.profession)]" data-toggle="tooltip" data-placement="top" title="" data-original-title="@player.playerName @player.build @player.profession @player.bossDPS.ToString("N0") dps">@player.playerName</div>
+                            </div>
+                        }
+                    }
+                </div>
+
+                <div class="well well-sm col-md-4">
+                    @{  recentLogID = Model.DbList.Where(x => x.BossName == "Matthias Gabrel").Max(obj => obj.ID);
+                        recentlog.Add(Model.DbList.FirstOrDefault(y => y.ID == recentLogID));}
+                    <h4>@recentlog[recentlog.Count - 1].BossName  @recentlog[recentlog.Count - 1].EVTCFile.ToString().Substring(recentlog[recentlog.Count - 1].EVTCFile.Length - 20, 15) <br />Killtime: @recentlog[recentlog.Count - 1].KillTime </h4>
+                    <a href="@Url.Action("Logs", "Home", new { id = recentlog[recentlog.Count - 1].ID })" class="btn btn-success btn-sm">Open</a>
+                    @{ recentPlayers = Model.PlList.Where(x => x.logID == recentLogID).ToList();
+                        maxdmg = recentPlayers.Max(x => x.bossDMG);
+                        foreach (var player in recentPlayers)
+                        {
+                            var percent = Decimal.Divide(player.bossDMG, maxdmg) * 100;
+                            <div class="progress" style="margin-bottom:2px;">
+                                <div class="progress-bar" style="margin-bottom:0px; width:@percent%; background-color: @ViewData[("Color-" + player.profession)]" data-toggle="tooltip" data-placement="top" title="" data-original-title="@player.playerName @player.build @player.profession @player.bossDPS.ToString("N0") dps">@player.playerName</div>
+                            </div>
+                        }
+                    }
+                </div>
+
+            </div>
+            @{if ((recentlog[3].EVTCFile.Substring(51, 8) == recentlog[4].EVTCFile.Substring(51, 8)))
+                {
+                    var timeStart = new TimeSpan(Int32.Parse(recentlog[3].EVTCFile.Substring(60, 2)), Int32.Parse(recentlog[3].EVTCFile.Substring(62, 2)), Int32.Parse(recentlog[3].EVTCFile.Substring(64, 2)));
+                    var timeEnd = new TimeSpan(Int32.Parse(recentlog[4].EVTCFile.Substring(60, 2)), Int32.Parse(recentlog[4].EVTCFile.Substring(62, 2)), Int32.Parse(recentlog[4].EVTCFile.Substring(64, 2)));
+                    <text> <p data-toggle="tooltip" data-placement="top" title="" data-original-title="Cannot add time taken failing 1st encounter[clear time = Last_Boss_Kill - First_Boss_Kill + First_Boss_Duration]">
+    Wing 2 Clear Time: @timeEnd.Subtract(timeStart).Add(recentlog[3].KillTime)</p></text>
+    }}
+</div>
+
+        <div>
+            <div class="row">
+                <div class="well well-sm col-md-4">
+                    @{  recentLogID = Model.DbList.Where(x => x.BossName == "Keep Construct").Max(obj => obj.ID);
+                        recentlog.Add(Model.DbList.FirstOrDefault(y => y.ID == recentLogID));}
+                    <h4>@recentlog[recentlog.Count - 1].BossName  @recentlog[recentlog.Count - 1].EVTCFile.ToString().Substring(recentlog[recentlog.Count - 1].EVTCFile.Length - 20, 15) <br />Killtime: @recentlog[recentlog.Count - 1].KillTime </h4>
+                    <a href="@Url.Action("Logs", "Home", new { id = recentlog[recentlog.Count - 1].ID })" class="btn btn-success btn-sm">Open</a>
+                    @{ recentPlayers = Model.PlList.Where(x => x.logID == recentLogID).ToList();
+                        maxdmg = recentPlayers.Max(x => x.bossDMG);
+                        foreach (var player in recentPlayers)
+                        {
+                            var percent = Decimal.Divide(player.bossDMG, maxdmg) * 100;
+                            <div class="progress" style="margin-bottom:2px;">
+                                <div class="progress-bar" style="margin-bottom:0px; width:@percent%; background-color: @ViewData[("Color-" + player.profession)]" data-toggle="tooltip" data-placement="top" title="" data-original-title="@player.playerName @player.build @player.profession @player.bossDPS.ToString("N0") dps">@player.playerName</div>
+                            </div>
+                        }
+                    }
+                </div>
+
+                <div class="well well-sm col-md-4">
+                    @{  recentLogID = Model.DbList.Where(x => x.BossName == "Xera").Max(obj => obj.ID);
+                        recentlog.Add(Model.DbList.FirstOrDefault(y => y.ID == recentLogID));}
+                    <h4>@recentlog[recentlog.Count - 1].BossName  @recentlog[recentlog.Count - 1].EVTCFile.ToString().Substring(recentlog[recentlog.Count - 1].EVTCFile.Length - 20, 15) <br />Killtime: @recentlog[recentlog.Count - 1].KillTime </h4>
+                    <a href="@Url.Action("Logs", "Home", new { id = recentlog[recentlog.Count - 1].ID })" class="btn btn-success btn-sm">Open</a>
+                    @{ recentPlayers = Model.PlList.Where(x => x.logID == recentLogID).ToList();
+                        maxdmg = recentPlayers.Max(x => x.bossDMG);
+                        foreach (var player in recentPlayers)
+                        {
+                            var percent = Decimal.Divide(player.bossDMG, maxdmg) * 100;
+                            <div class="progress" style="margin-bottom:2px;">
+                                <div class="progress-bar" style="margin-bottom:0px; width:@percent%; background-color: @ViewData[("Color-" + player.profession)]" data-toggle="tooltip" data-placement="top" title="" data-original-title="@player.playerName @player.build @player.profession @player.bossDPS.ToString("N0") dps">@player.playerName</div>
+                            </div>
+                        }
+                    }
+                </div>
+
+            </div>
+            @{if ((recentlog[5].EVTCFile.Substring(51, 8) == recentlog[6].EVTCFile.Substring(51, 8)))
+                {
+                    var timeStart = new TimeSpan(Int32.Parse(recentlog[5].EVTCFile.Substring(60, 2)), Int32.Parse(recentlog[5].EVTCFile.Substring(62, 2)), Int32.Parse(recentlog[5].EVTCFile.Substring(64, 2)));
+                    var timeEnd = new TimeSpan(Int32.Parse(recentlog[6].EVTCFile.Substring(60, 2)), Int32.Parse(recentlog[6].EVTCFile.Substring(62, 2)), Int32.Parse(recentlog[6].EVTCFile.Substring(64, 2)));
+                    <text> <p data-toggle="tooltip" data-placement="top" title="" data-original-title="Cannot add time taken failing 1st encounter[clear time = Last_Boss_Kill - First_Boss_Kill + First_Boss_Duration]">
+    Wing 3 Clear Time: @timeEnd.Subtract(timeStart).Add(recentlog[5].KillTime) (Cannot add in time taken on Escort)</p></text>
+    }}
+</div>
+
+        <div>
+            <div class="row">
+                <div class="well well-sm col-md-3">
+                    @{  recentLogID = Model.DbList.Where(x => x.BossName == "Cairn the Indomitable").Max(obj => obj.ID);
+                        recentlog.Add(Model.DbList.FirstOrDefault(y => y.ID == recentLogID));}
+                    <h4>@recentlog[recentlog.Count - 1].BossName  @recentlog[recentlog.Count - 1].EVTCFile.ToString().Substring(recentlog[recentlog.Count - 1].EVTCFile.Length - 20, 15) <br />Killtime: @recentlog[recentlog.Count - 1].KillTime </h4>
+                    <a href="@Url.Action("Logs", "Home", new { id = recentlog[recentlog.Count - 1].ID })" class="btn btn-success btn-sm">Open</a>
+                    @{ recentPlayers = Model.PlList.Where(x => x.logID == recentLogID).ToList();
+                        maxdmg = recentPlayers.Max(x => x.bossDMG);
+                        foreach (var player in recentPlayers)
+                        {
+                            var percent = Decimal.Divide(player.bossDMG, maxdmg) * 100;
+                            <div class="progress" style="margin-bottom:2px;">
+                                <div class="progress-bar" style="margin-bottom:0px; width:@percent%; background-color: @ViewData[("Color-" + player.profession)]" data-toggle="tooltip" data-placement="top" title="" data-original-title="@player.playerName @player.build @player.profession @player.bossDPS.ToString("N0") dps">@player.playerName</div>
+                            </div>
+                        }
+                    }
+                </div>
+
+                <div class="well well-sm col-md-3">
+                    @{  recentLogID = Model.DbList.Where(x => x.BossName == "Mursaat Overseer").Max(obj => obj.ID);
+                        recentlog.Add(Model.DbList.FirstOrDefault(y => y.ID == recentLogID));}
+                    <h4>@recentlog[recentlog.Count - 1].BossName  @recentlog[recentlog.Count - 1].EVTCFile.ToString().Substring(recentlog[recentlog.Count - 1].EVTCFile.Length - 20, 15) <br />Killtime: @recentlog[recentlog.Count - 1].KillTime </h4>
+                    <a href="@Url.Action("Logs", "Home", new { id = recentlog[recentlog.Count - 1].ID })" class="btn btn-success btn-sm">Open</a>
+                    @{ recentPlayers = Model.PlList.Where(x => x.logID == recentLogID).ToList();
+                        maxdmg = recentPlayers.Max(x => x.bossDMG);
+                        foreach (var player in recentPlayers)
+                        {
+                            var percent = Decimal.Divide(player.bossDMG, maxdmg) * 100;
+                            <div class="progress" style="margin-bottom:2px;">
+                                <div class="progress-bar" style="margin-bottom:0px; width:@percent%; background-color: @ViewData[("Color-" + player.profession)]" data-toggle="tooltip" data-placement="top" title="" data-original-title="@player.playerName @player.build @player.profession @player.bossDPS.ToString("N0") dps">@player.playerName</div>
+                            </div>
+                        }
+                    }
+                </div>
+
+                <div class="well well-sm col-md-3">
+                    @{  recentLogID = Model.DbList.Where(x => x.BossName == "Samarog").Max(obj => obj.ID);
+                        recentlog.Add(Model.DbList.FirstOrDefault(y => y.ID == recentLogID));}
+                    <h4>@recentlog[recentlog.Count - 1].BossName  @recentlog[recentlog.Count - 1].EVTCFile.ToString().Substring(recentlog[recentlog.Count - 1].EVTCFile.Length - 20, 15) <br />Killtime: @recentlog[recentlog.Count - 1].KillTime </h4>
+                    <a href="@Url.Action("Logs", "Home", new { id = recentlog[recentlog.Count - 1].ID })" class="btn btn-success btn-sm">Open</a>
+                    @{ recentPlayers = Model.PlList.Where(x => x.logID == recentLogID).ToList();
+                        maxdmg = recentPlayers.Max(x => x.bossDMG);
+                        foreach (var player in recentPlayers)
+                        {
+                            var percent = Decimal.Divide(player.bossDMG, maxdmg) * 100;
+                            <div class="progress" style="margin-bottom:2px;">
+                                <div class="progress-bar" style="margin-bottom:0px; width:@percent%; background-color: @ViewData[("Color-" + player.profession)]" data-toggle="tooltip" data-placement="top" title="" data-original-title="@player.playerName @player.build @player.profession @player.bossDPS.ToString("N0") dps">@player.playerName</div>
+                            </div>
+                        }
+                    }
+                </div>
+
+                <div class="well well-sm col-md-3">
+                    @{  recentLogID = Model.DbList.Where(x => x.BossName == "Deimos").Max(obj => obj.ID);
+                        recentlog.Add(Model.DbList.FirstOrDefault(y => y.ID == recentLogID));}
+                    <h4>@recentlog[recentlog.Count - 1].BossName  @recentlog[recentlog.Count - 1].EVTCFile.ToString().Substring(recentlog[recentlog.Count - 1].EVTCFile.Length - 20, 15) <br />Killtime: @recentlog[recentlog.Count - 1].KillTime </h4>
+                    <a href="@Url.Action("Logs", "Home", new { id = recentlog[recentlog.Count - 1].ID })" class="btn btn-success btn-sm">Open</a>
+                    @{ recentPlayers = Model.PlList.Where(x => x.logID == recentLogID).ToList();
+                        maxdmg = recentPlayers.Max(x => x.bossDMG);
+                        foreach (var player in recentPlayers)
+                        {
+                            var percent = Decimal.Divide(player.bossDMG, maxdmg) * 100;
+                            <div class="progress" style="margin-bottom:2px;">
+                                <div class="progress-bar" style="margin-bottom:0px; width:@percent%; background-color: @ViewData[("Color-" + player.profession)]" data-toggle="tooltip" data-placement="top" title="" data-original-title="@player.playerName @player.build @player.profession @player.bossDPS.ToString("N0") dps">@player.playerName</div>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+            @{if ((recentlog[7].EVTCFile.Substring(51, 8) == recentlog[8].EVTCFile.Substring(51, 8)) && (recentlog[8].EVTCFile.Substring(51, 8) == recentlog[9].EVTCFile.Substring(51, 8)) && (recentlog[9].EVTCFile.Substring(51, 8) == recentlog[10].EVTCFile.Substring(51, 8)))
+                {
+                    var timeStart = new TimeSpan(Int32.Parse(recentlog[7].EVTCFile.Substring(60, 2)), Int32.Parse(recentlog[7].EVTCFile.Substring(62, 2)), Int32.Parse(recentlog[7].EVTCFile.Substring(64, 2)));
+                    var timeEnd = new TimeSpan(Int32.Parse(recentlog[10].EVTCFile.Substring(60, 2)), Int32.Parse(recentlog[10].EVTCFile.Substring(62, 2)), Int32.Parse(recentlog[10].EVTCFile.Substring(64, 2)));
+                    <text><p data-toggle="tooltip" data-placement="top" title="" data-original-title="Cannot add time taken failing 1st encounter[clear time = Last_Boss_Kill - First_Boss_Kill + First_Boss_Duration]"> Wing 4 Clear Time: @timeEnd.Subtract(timeStart).Add(recentlog[7].KillTime) </p></text>
+                }}
+        </div>
+    </div>*@
+
+<img src="~/Content/images/guild_hall.jpg" alt="Guild Hall" class="img-responsive" />

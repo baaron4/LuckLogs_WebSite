@@ -1,0 +1,25 @@
+﻿<script>
+   $( function setPatch() {
+        var patchInput,patchValue, groupInput,groupValue;
+        patchInput = document.getElementById("patch-select");
+        patchValue = patchInput.nodeValue.toUpperCase();
+        groupInput = document.getElementById("group-select");
+        groupValue = groupInput.nodeValue.toUpperCase();
+
+       @ViewData["Patch"] = patchValue;
+       
+    })
+</script>
+<div class="row">
+    <select style="display: inline;width:100%" class="form-control" id="patch-select" onchange="setPatch()">
+        <option value="8/27/2017">Pre PoF Balance patch</option>
+        <option value="7/17/2017">Utility rework patch</option>
+        <option value="6/16/2017">Seaweed Salad nerf patch</option>
+    </select>
+
+    <select style="display: inline;width:100%" class="form-control" id="group-select" onchange="setPatch()">
+        <option value="All">All Logs</option>
+        <option value="Users">Users Logs</option>
+        <option value="usersGroup">User Groups Logs</option>
+    </select>
+</div>

@@ -1,0 +1,153 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+  
+}
+.bg {
+    /* The image used */
+    background-image: url("https://d3b4yo2b5lbfy.cloudfront.net/wp-content/uploads/2017/08/f8e83path-of-fire-concept-art-DesertLookout.jpg");
+    /* Full height */
+    width: 100%;
+    height: 100%;
+    /* Center and scale the image nicely */
+    background-repeat: no-repeat;
+    max-width: 100%;
+    min-height: 100%;
+    background-attachment: fixed;
+    /*background-size: cover;*/
+}
+
+/* Wrapping element */
+/* Set some basic padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+    color: #c8c8c8;
+    background-color: #272b30;
+}
+
+/* Set widths on the form inputs since otherwise they're 100% wide */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+/* Carousel */
+.carousel-caption p {
+    font-size: 20px;
+    line-height: 1.4;
+}
+
+/* Make .svg files in the carousel display properly in older browsers */
+.carousel-inner .item img[src$=".svg"] {
+    width: 100%;
+}
+
+/* Hide/rearrange for smaller screens */
+@media screen and (max-width: 767px) {
+    /* Hide captions */
+    .carousel-caption {
+        display: none;
+    }
+}
+/*******************************
+* MODAL AS LEFT/RIGHT SIDEBAR
+* Add "left" or "right" in modal parent div, after class="modal".
+* Get free snippets on bootpen.com
+*******************************/
+.modal.left .modal-dialog,
+.modal.right .modal-dialog {
+    position: fixed;
+    margin: auto;
+    width: 520px;
+    height: 100%;
+    -webkit-transform: translate3d(0%, 0, 0);
+    -ms-transform: translate3d(0%, 0, 0);
+    -o-transform: translate3d(0%, 0, 0);
+    transform: translate3d(0%, 0, 0);
+}
+
+.modal.left .modal-content,
+.modal.right .modal-content {
+    height: 100%;
+    overflow-y: auto;
+}
+
+.modal.left .modal-body,
+.modal.right .modal-body {
+    padding: 15px 15px 80px;
+    position:static;
+    
+}
+
+/*Left*/
+.modal.left.fade .modal-dialog {
+    top: 52px;
+    left: -320px;
+    -webkit-transition: opacity 0.3s linear, left 0.3s ease-out;
+    -moz-transition: opacity 0.3s linear, left 0.3s ease-out;
+    -o-transition: opacity 0.3s linear, left 0.3s ease-out;
+    transition: opacity 0.3s linear, left 0.3s ease-out;
+}
+
+.modal.left.fade.in .modal-dialog {
+    left: 0;
+}
+
+/*Right*/
+.modal.right.fade .modal-dialog {
+    top: 52px;
+    right: -320px;
+    -webkit-transition: opacity 0.3s linear, right 0.3s ease-out;
+    -moz-transition: opacity 0.3s linear, right 0.3s ease-out;
+    -o-transition: opacity 0.3s linear, right 0.3s ease-out;
+    transition: opacity 0.3s linear, right 0.3s ease-out;
+}
+
+.modal.right.fade.in .modal-dialog {
+    right: 0;
+}
+
+/* ----- MODAL STYLE ----- */
+.modal-content {
+    border-radius: 0;
+    border: none;
+    background-color: rgb(60,60,60);
+}
+
+.modal-header {
+    border-bottom-color: #2E3338;
+    background-color: rgb(60,60,60);
+}
+.modal-open {
+    overflow-y: scroll;
+}
+.tooltip {
+
+    z-index: 9999;
+    position: fixed;
+}
+
+#dropArea {
+    background: #b5b5b5;
+    border: black dashed 1px;
+    height: 50px;
+    text-align: center;
+    color: #fff;
+    padding-top: 12px;
+}
+
+.active-drop {
+    background: #77bafa !important;
+    border: solid 2px blue !important;
+    opacity: .5;
+    color: black !important;
+}
+
+tfoot {
+    display: table-header-group;
+}
+table {
+    font-size: small;
+}

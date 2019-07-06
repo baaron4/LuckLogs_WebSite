@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <Target Name="SetupCustomAcls" AfterTargets="AddIisSettingAndFileContentsToSourceManifest">   
+    <!-- This must be declared inside of a target because the property 
+    $(_MSDeployDirPath_FullPath) will not be defined at that time. -->
+    <ItemGroup>
+      <MsDeploySourceManifest Include="setAcl">
+        <Path>$(_MSDeployDirPath_FullPath)\doc\public</Path>
+        <setAclAccess>Read,Write,Modify</setAclAccess>
+        <setAclResourceType>Directory</setAclResourceType>
+        <AdditionalProviderSettings>setAclResourceType;setAclAccess</AdditionalProviderSettings>
+      </MsDeploySourceManifest>
+    </ItemGroup>
+  </Target>
+
+  <Target Name="DeclareCustomParameters" AfterTargets="AddIisAndContentDeclareParametersItems">
+    <!-- This must be declared inside of a target because the property 
+    $(_EscapeRegEx_MSDeployDirPath) will not be defined at that time. -->
+    <ItemGroup>
+      <MsDeployDeclareParameters Include="DocPublicSetAclParam">
+        <Kind>ProviderPath</Kind>
+        <Scope>setAcl</Scope>
+        <Match>^$(_EscapeRegEx_MSDeployDirPath)\\doc\\public$</Match>
+        <Value>$(_DestinationContentPath)/doc/public</Value>
+        <ExcludeFromSetParameter>True</ExcludeFromSetParameter>
+      </MsDeployDeclareParameters>
+    </ItemGroup>
+  </Target>
+
+</Project>
